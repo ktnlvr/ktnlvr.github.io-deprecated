@@ -1,11 +1,5 @@
 <html>
-
-<head>
-    <title>Rooftop</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    <meta charset="utf-8" />
-</head>
+{{- partial "head.html" . -}}
 
 <body>
     <h1>Kittenlover's Rooftop</h1>
@@ -13,7 +7,7 @@
     This is my personal space and rather minimalistic online presence. This
     website includes a blog, a listing of my personal projects, my up-to-date CV
     and else. I do programming and contract work. Currently an active IB Student.
-    Located in Joensuu, North Karelia, Finland. Fluent in English (IELTS C1). 
+    Located in Joensuu, North Karelia, Finland. Fluent in English (IELTS C1).
     My spare time is spent learning about programming
     languages and linguistics in general, hacking away at my pet-projects, cooking,
     gaming and sometimes reading. Experienced in C/C++ and Python3.X, interested in Rust.
@@ -32,6 +26,8 @@
             beginner-level Python3.X compsci exercises for a small programming club in my school.</li>
         <li><a href="https://github.com/Kittenlover229/tinytest">tinytest</a> - zero-dependency zero-warning header-only
             single-header testing framework written entirely in ANSI C.</li>
+        <li><a href="https://github.com/Kittenlover229/rooftop">rooftop</a> - a static website for my portfolio &
+            personal blog that you are looking at right now. Powered by Hugo and it's markdown engine.</li>
         <li><a href="https://github.com/Kittenlover229/Asteroids">Asteroids</a> - a harmless asteroids clone built on
             top of olcPixelGameEngine. Unfinisehd as of 25/02/23, but still good work.</li>
     </ul>
@@ -44,6 +40,7 @@
         <a href="https://kittenlover.ru">Website</a>
         <a href="discord.com">Kittenlover#8977 on Discord</a>
     </address>
+    {{- partial "footer.html" . -}}
 </body>
 
 </html>
