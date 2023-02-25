@@ -1,5 +1,9 @@
 @import url(https://latex.now.sh/style.css);
 
+html {
+    font-size: 1.5em;
+}
+
 footer {
     opacity: 0.2;
     margin-top: 10%;
