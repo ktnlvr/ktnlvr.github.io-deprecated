@@ -1,0 +1,23 @@
+{{ define "main" }}
+{{.Content}}<br>
+<table>
+    <caption>All Posts</caption>
+    <thead>
+        <th>Title</th>
+        <th>Published</th>
+        <th>Reading Time</th>
+        <th>Summary</th>
+    </thead>
+
+    {{ range .Pages }}
+    <tbody>
+        <tr>
+            <td><a href="{{.Permalink}}">{{.Title}}</a></td>
+            <td>{{ dateFormat "Mon Jan 2 2006" .Date}}</td>
+            <td>~{{.ReadingTime}} minute</td>
+            <td>{{.Summary}}</td>
+        </tr>
+    </tbody>
+    {{end}}
+</table>
+{{end}}

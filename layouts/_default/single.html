@@ -1,0 +1,4 @@
+{{ define "main" }}
+    <p class="author"><b>{{.Title}}</b><br>Artur Roos, {{ dateFormat "Mon Jan 2 2006" .Date }}</p>
+    {{.Content}}
+{{end}}
