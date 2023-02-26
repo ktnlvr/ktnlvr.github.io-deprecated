@@ -1,5 +1,5 @@
-{{ define "main" }}
-    <h1>{{.Title}}</h1>
-    <p class="author">Artur Roos, {{ dateFormat "Mon Jan 2 2006" .Date }}</p>
+{{define "main"}}
+    <h1>{{if .Draft}}(DRAFT){{end}} {{.Title}}</h1>
+    <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .Date}}</p>
     {{.Content}}
 {{end}}
