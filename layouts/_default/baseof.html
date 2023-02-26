@@ -7,6 +7,7 @@
     <meta property="og:description" content="{{.Summary}}" />
 </head>
 <body>
+    {{- partial "breadcrumbs.html" . -}}
     {{- partial "gradient.html" . -}}
     {{ block "main" . }}
     {{end}}
