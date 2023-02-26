@@ -1,3 +1,15 @@
 baseURL = 'https://kittenlover.ru/'
 languageCode = 'en-us'
 title = "Kittenlover's Rooftop"
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = true
+    codeFences = true
+    hl_Lines = ''
+    hl_inline = false
+    lineNoStart = 1
+    lineNos = true
+    noClasses = true
+    style = 'algol_nu'
+    tabWidth = 2
