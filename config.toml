@@ -9,7 +9,6 @@ title = "Kittenlover's Rooftop"
     hl_Lines = ''
     hl_inline = false
     lineNoStart = 1
-    lineNos = true
     noClasses = true
     style = 'algol_nu'
     tabWidth = 2

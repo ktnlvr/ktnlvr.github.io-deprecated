@@ -1,15 +1,17 @@
 ---
 title: "Exploration and Mimicry of Monads in Non-functional Languages"
 date: 2023-02-25T23:33:07,929822743+02:00
+draft: true
 ---
 
 This article is intended to demonstrate in a usual context and aimed at one of my friends, who keeps forgetting how they work. If you are reading this, you know that's you. When thinking about monads it's important to differentiate their meaning in the world of mathematics and in the world of practical programming. Since I am not a mathematician as of writing this post I will be focusing on the practical aspect of their usage. All the examples are given in Python-esque syntax with some details ommited for brevity.
+
 
 ## Combating Nullability
 
 Imagine the following: you are writing a matchmaking system and you want your players to hang out together. For that purpose you designed a system of rooms.
 
-{{< sidenote text="`@struct` serves the same function as `@dataclass` in classical Python" >}}
+{{< sidenote text="`@struct` serves the same function as `@dataclass` in classical Python. Assume all the fields of the class are actually fields of an instance and the constructor has all said fields as it's named arguments." >}}
 ```py
 @struct
 class Room:
@@ -35,7 +37,7 @@ This is a standard way of handling a nullable value. We can probably see ourselv
 An experienced programer might guess that `max_players` can very well be `None`, but the language itself doesn't tell you that.
 Let's try and fix that possible problem with the following structure.
 
-{{< sidenote text="The operation of transforming a value of type `T` into `Functor[T]` is commonly called \"lifting\" or less commonly \"wrapping\". In this case the lift is `Something[T]`." >}}
+{{< sidenote text="The operation of transforming a value of type `T` into `Functor[T]` is commonly called \"lifting\" or less commonly \"wrapping\". In this case the lift is `Something[T]`. When instantiating a room its field `.max_players` had to have been initialized with either `Nothing()` or `Something(max_players_value)`" >}}
 ```py
 @struct 
 class Maybe[T]:
@@ -46,6 +48,8 @@ class Maybe[T]:
             new_value: P = f(self._value)
             return Maybe[P](_value = new_value)
 
+    # not related to Monads in general, 
+    # just a convinient function for a Maybe[T]
     def unwrap_or(self, alternative: T) -> T:
         if self._value is not None:
             return self._value
@@ -97,14 +101,12 @@ class Maybe[U]:
         if self._value is None:
             return None
         else:
-            new_value = f(self._value)
-            return Maybe[V](_value = new_valeu)
+            return f(self._value)
 ```
 
 The usability of this becomes even more drastic when composing a lot of nullable values together, like in the example below.
 
 ```py
-
 # All these functions may be null, so they 
 # will return either T | None or Maybe[T]
 # depending on the context
@@ -114,8 +116,8 @@ def get_smpt_server(user) -> Any
 def get_host(server) -> Any
 
 # Example with all the functions returning T | None
-def get_gregs_smpt_host_nullable() -> IpV4 | None:
-    greg = get_user_nullable("greg")
+def get_gregs_smpt_host_ip4() -> str | None:
+    greg = get_user("greg")
     if user is None:
         return None
     email = get_email(greg)
@@ -125,19 +127,22 @@ def get_gregs_smpt_host_nullable() -> IpV4 | None:
     if server is None:
         return None
     host = get_host(server)
-    return host
+    return str(host)
 
 # Same example with all functions returning Maybe[T]
-def get_gregs_smpt_host_maybe() -> Maybe[IpV4]
-    get_user_maybe("greg")
+def get_gregs_smpt_host_ip4() -> Maybe[str]
+    return get_user("greg")
         .mmap(get_user)
         .mmap(get_email)
         .mmap(get_smpt_server)
         .mmap(get_host)
+        .fmap(str)
 ```
 
-This example is of course very dramatic, but it should demonstrate the effectiveness fairly well.
+This example is of course very dramatic, but it should demonstrate the effectiveness fairly well. In a way the Maybe monad is similar to Schrödinger's Cat. If the animal is still alive we really would love to pet it, but puss farewell if not. That is branching without explicit `if` statements.
+One might say that this "tower" is difficult to read, but I would argue it won't be as hard when you get used.
+
 
 ## Lazy Evaluation
 
-TODO
+If you don't find the point above convincing enough there is another, more specific usecase for monads. That would be containing values. 
