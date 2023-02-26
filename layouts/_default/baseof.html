@@ -3,15 +3,16 @@
 <head>
     {{- partial "head.html" . -}}
     <meta property="og:title" content="{{.Title}}" />
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/50303281?v=4" />
+    <meta property="og:image" content="/img/pfp.png" />
     <meta property="og:description" content="{{.Summary}}" />
+
 </head>
 <body>
     {{- partial "breadcrumbs.html" . -}}
     {{- partial "gradient.html" . -}}
-    {{ block "main" . }}
+    {{block "main" . }}
     {{end}}
-    {{ block "footer" . }}
+    {{block "footer" . }}
     {{- partial "footer.html" . -}}
     {{end}}
 </body>
