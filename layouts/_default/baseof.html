@@ -6,8 +6,8 @@
     <meta property="og:image" content="https://avatars.githubusercontent.com/u/50303281?v=4" />
     <meta property="og:description" content="{{.Summary}}" />
 </head>
-
 <body>
+    {{- partial "gradient.html" . -}}
     {{ block "main" . }}
     {{end}}
     {{ block "footer" . }}

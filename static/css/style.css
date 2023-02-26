@@ -5,12 +5,25 @@ html {
 }
 
 footer {
+    z-index: 101;
     opacity: 0.2;
-    margin-top: 10%;
+    margin-top: 5%;
+    margin-bottom: 10%;
     transition: 0.1s;
 }
 
 footer:hover {
+    z-index: 101;
     transition: 0.2s;
     opacity: 1;
+}
+
+.overlay {
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    height: 20vh;
+    transform: translate(0, 80vh);
+    background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
 }
