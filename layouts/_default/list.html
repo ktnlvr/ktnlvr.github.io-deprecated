@@ -1,4 +1,4 @@
-{{ define "main" }}
+{{define "main"}}
 {{.Content}}<br>
 <table>
     <caption>All Posts</caption>
@@ -9,11 +9,11 @@
         <th>Summary</th>
     </thead>
 
-    {{ range .Pages }}
+    {{range .Pages}}
     <tbody>
         <tr>
-            <td>{{ if .Draft}}(DRAFT) {{end}}<a href="{{.Permalink}}">{{.Title}}</a></td>
-            <td>{{ dateFormat "Mon Jan 2 2006" .Date}}</td>
+            <td>{{if .Draft}}(DRAFT) {{end}}<a href="{{.Permalink}}">{{.Title}}</a></td>
+            <td>{{dateFormat "Mon Jan 2 2006" .Date}}</td>
             <td>~{{.ReadingTime}} minute</td>
             <td>{{.Summary}}</td>
         </tr>
