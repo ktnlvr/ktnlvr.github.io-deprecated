@@ -23,8 +23,9 @@ footer:hover {
     position: fixed;
     width: 100%;
     left: 0px;
-    height: 20vh;
-    transform: translate(0, 80vh);
+    height: 30vh;
+    transform: translate(0, 70vh);
+    pointer-events: none;
     background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
 }
 
