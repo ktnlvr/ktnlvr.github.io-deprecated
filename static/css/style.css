@@ -29,13 +29,16 @@ footer:hover {
     background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
 }
 
-ul.list-of-posts {
+.list-of-posts {
     list-style: none;
     padding: 0px;
+    padding-top: 5%;
+    padding-right: 5%;
+    padding-left: 5%;
 }
 
-ul.list-of-posts > li:not(:last-child) {
-    margin-bottom: 25px;
+.list-of-posts > li:not(:last-child) {
+    margin-bottom: 5%;
 }
 
 a.article-title {
