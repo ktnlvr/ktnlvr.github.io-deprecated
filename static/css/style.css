@@ -29,11 +29,12 @@ footer:hover {
     background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
 }
 
-.list-of-posts {
+ul.list-of-posts {
     list-style: none;
+    padding: 0px;
 }
 
-.list-of-posts > li {
+ul.list-of-posts > li {
     padding-bottom: 30px;
 }
 
