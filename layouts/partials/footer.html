@@ -1,6 +1,8 @@
 <footer class="footnotes">
     Built with <a href="https://gohugo.io/">Hugo</a> & <a href="https://latex.vercel.app/">LaTeX.css</a>
     by Artur Roos (c) 2023. <a href="{{ .Page.Permalink }}">Permalink</a>. <a href="#top">Top</a>. 
-    <br>All posts are licensesd under a
+    <br>All posts are licensed under
+    {{block "license" .}}
     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    {{end}}
 </footer>
