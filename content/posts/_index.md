@@ -1,3 +1,7 @@
+---
+title: Posts
+---
+
 # Posts
 
 This category contains all my posts. It aggregates everything, from deeply 

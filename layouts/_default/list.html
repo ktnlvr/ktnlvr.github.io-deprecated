@@ -1,23 +1,16 @@
 {{define "main"}}
 {{.Content}}<br>
-<table>
-    <caption>All Posts</caption>
-    <thead>
-        <th>Title</th>
-        <th>Published</th>
-        <th>Reading Time</th>
-        <th>Summary</th>
-    </thead>
 
-    {{range .Pages}}
-    <tbody>
-        <tr>
-            <td>{{if .Draft}}(DRAFT) {{end}}<a href="{{.Permalink}}">{{.Title}}</a></td>
-            <td>{{dateFormat "Mon Jan 2 2006" .Date}}</td>
-            <td>~{{.ReadingTime}} minute</td>
-            <td>{{.Summary}}</td>
-        </tr>
-    </tbody>
-    {{end}}
-</table>
+<ul class="list-of-posts">
+{{range .Pages}}
+<li>
+    <a href="{{.Permalink}}" class="article-title">{{.Title}}</a><br>
+    <i>{{dateFormat "Mon Jan 2 2006" .Date}}, ~{{.ReadingTime}} min{{if .Draft}}, draft{{end}}</i>
+    <br>
+    {{.Summary}} <a href="{{.Permalink}}">[Read More]</a>
+</li>
+<br>
+{{end}}
+</ul>
+
 {{end}}

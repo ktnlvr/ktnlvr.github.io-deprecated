@@ -29,6 +29,18 @@ footer:hover {
     background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
 }
 
+.list-of-posts {
+    list-style: none;
+}
+
+.list-of-posts > li {
+    padding-bottom: 30px;
+}
+
+a.article-title {
+    color: var(--body-color);
+}
+
 #breadcrumbs > li {
     display: inline;
     padding-left: 5px;
