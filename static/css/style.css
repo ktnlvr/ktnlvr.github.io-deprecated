@@ -38,6 +38,7 @@ footer:hover {
 }
 
 a.article-title {
+    font-size: 125%;
     color: var(--body-color);
 }
 
