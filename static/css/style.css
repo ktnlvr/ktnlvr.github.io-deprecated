@@ -34,13 +34,18 @@ ul.list-of-posts {
     padding: 0px;
 }
 
-ul.list-of-posts > li {
-    padding-bottom: 30px;
+ul.list-of-posts > li:not(:last-child) {
+    margin-bottom: 25px;
 }
 
 a.article-title {
     font-size: 125%;
     color: var(--body-color);
+}
+
+#breadcrumbs {
+    list-style: none;
+    padding: 0px;
 }
 
 #breadcrumbs > li {
