@@ -1,10 +1,11 @@
 ---
-title: "Exploration and Mimicry of Monads in Non-functional Languages"
+title: "Again, what is a Monad?"
 date: 2023-02-25T23:33:07,929822743+02:00
 draft: true
 ---
 
-This article is intended to demonstrate in a usual context and aimed at one of my friends, who keeps forgetting how they work. If you are reading this, you know that's you. When thinking about monads it's important to differentiate their meaning in the world of mathematics and in the world of practical programming. Since I am not a mathematician as of writing this post I will be focusing on the practical aspect of their usage. All the examples are given in Python-esque syntax with some details ommited for brevity.
+I got tired of giving the same explaination for monads to the same forgetful people, so might as well write it out and mail it to them every time they need a refresher.
+When thinking about monads it's important to differentiate their meaning in the world of mathematics and in the world of practical programming. Since I am not a mathematician as of writing this post I will be focusing on the practical aspect of their usage. All the examples are given in Python-esque syntax with some details ommited for brevity.
 
 
 ## Combating Nullability
