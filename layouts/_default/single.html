@@ -1,5 +1,6 @@
 {{define "main"}}
-    <h1>{{if .Draft}}(DRAFT){{end}} {{.Title}}</h1>
+    <h1>{{.Title}}</h1>
     <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .Date}}</p>
+    {{if .Draft}}<b><i>Beware: this is a draft! Any line of this might change at any moment!</i></b>{{end}}
     {{.Content}}
 {{end}}
