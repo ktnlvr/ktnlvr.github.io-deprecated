@@ -2,6 +2,7 @@
 title: "Again, what is a Monad?"
 date: 2023-02-25T23:33:07,929822743+02:00
 draft: true
+description: Using monads in non-functional and functional programming languages
 ---
 
 I got tired of giving the same explaination for monads to the same forgetful people, so might as well write it out and mail it to them every time they need a refresher.
