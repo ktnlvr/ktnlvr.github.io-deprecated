@@ -5,7 +5,9 @@
     {{block "license" .}}
     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
     {{end}}
+    {{if .IsPage}}
     {{block "cite" .}}
     Cite this as <a href="{{.Page.Permalink}}.bib">BibTex.</a>
+    {{end}}
     {{end}}
 </footer>
