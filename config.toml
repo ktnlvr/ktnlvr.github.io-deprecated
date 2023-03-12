@@ -12,3 +12,15 @@ title = "Kittenlover's Rooftop"
     noClasses = true
     style = 'algol_nu'
     tabWidth = 2
+[mediaTypes]
+  [mediaTypes."text/bibtex"]
+    suffixes = ["bib"]
+[outputFormats]
+  [outputFormats.Bibcite]
+    baseName = ''
+    isPlainText = true
+    mediaType = 'text/bibtex'
+    permalinkable = true
+
+[outputs]
+  page = ['HTML', 'BIBCITE']
