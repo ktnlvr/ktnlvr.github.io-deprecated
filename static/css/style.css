@@ -41,6 +41,16 @@ footer:hover {
     margin-bottom: 5%;
 }
 
+.unlisted {
+    opacity: 33%;
+    transition: cubic-bezier(0.23, 1, 0.320, 1);
+    transition-duration: 0.4s;
+}
+
+.unlisted:hover {
+    opacity:  67%;
+}
+
 a.article-title {
     font-size: 125%;
     color: var(--body-color);

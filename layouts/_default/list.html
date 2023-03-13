@@ -2,8 +2,8 @@
 {{.Content}}
 <ul class="list-of-posts">
 {{range .Pages}}
-<li>
-    <a href="{{.Permalink}}" class="article-title">{{.Title}}</a><br>
+<li class="{{if .Draft}}unlisted{{end}}">
+    <a href="{{.Permalink}}" class="article-title">{{.Title}}</a>{{if .Draft}} (Unlisted){{end}}<br>
     <i>{{dateFormat "Mon Jan 2 2006" .Date}}, ~{{.ReadingTime}} min{{if .Draft}}, draft{{end}}</i>
     <br>
     {{.Summary}} <a href="{{.Permalink}}">[Read More]</a>
