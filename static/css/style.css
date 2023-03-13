@@ -60,3 +60,8 @@ a.article-title {
 #breadcrumbs > li > a {
     color: var(--body-color);
 }
+
+html {
+    visibility: visible;
+    opacity: 1;
+}
