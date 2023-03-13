@@ -4,11 +4,13 @@
 <head>
     {{partial "head.html" .}}
 </head>
-<body>
+<body style="padding-top: 2.5%; padding-bottom: 5%">
     {{partial "breadcrumbs.html" .}}
     {{partial "gradient.html" .}}
-    {{block "main" . }}
-    {{end}}
+    <main>
+        {{block "main" . }}
+        {{end}}
+    </main>
     {{block "footer" . }}
     {{partial "footer.html" .}}
     {{end}}
