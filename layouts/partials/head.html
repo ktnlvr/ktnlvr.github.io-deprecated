@@ -3,7 +3,7 @@
 <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{if .Description}}{{.Description | truncate 60 }}{{else}}{{.Summary | truncate 60 }}{{end}}" />
+<meta name="description" content="{{if .Description}}{{.Description | truncate 60 }}{{else if .Summary}}{{.Summary | truncate 60 }}{{else}}{{.Content | truncate 60}}{{end}}" />
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{.Permalink}}">
 <meta property="og:title" content="{{.Title}}" />
