@@ -2,6 +2,12 @@ baseURL = 'https://kittenlover.dev/'
 languageCode = 'en-us'
 title = "Kittenlover's Rooftop"
 enableGitInfo = true
+enableRobotsTXT = true
+rssLimit = 20
+
+[minify]
+  disableCSS = false
+  minifyOutput = true
 
 [markup]
   [markup.highlight]
