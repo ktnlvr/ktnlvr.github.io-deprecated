@@ -1,6 +1,7 @@
 baseURL = 'https://kittenlover.dev/'
 languageCode = 'en-us'
 title = "Kittenlover's Rooftop"
+enableGitInfo = true
 
 [markup]
   [markup.highlight]

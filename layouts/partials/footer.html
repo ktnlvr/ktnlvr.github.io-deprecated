@@ -9,5 +9,6 @@
     {{block "cite" .}}
     Cite this as <a href="{{.Page.Permalink}}.bib">BibTex.</a>
     {{end}}
+    This page was last modified {{.Lastmod | time.Format ":date_long"}}. Currently viewing commit <a href="https://github.com/Kittenlover229/rooftop/commit/{{.GitInfo.Hash}}">{{.GitInfo.AbbreviatedHash}}</a>.
     {{end}}
 </footer>
