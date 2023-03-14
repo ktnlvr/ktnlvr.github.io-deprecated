@@ -3,10 +3,10 @@
 <ul class="list-of-posts">
 {{range .Pages}}
 <li class="{{if .Draft}}unlisted{{end}}">
-    <a href="{{.Permalink}}" class="article-title">{{.Title}}</a>{{if .Draft}} (Unlisted){{end}}<br>
+    <a href="{{.RelPermalink}}" class="article-title">{{.Title}}</a>{{if .Draft}} (Unlisted){{end}}<br>
     <i>{{dateFormat "Mon Jan 2 2006" .Date}}, ~{{.ReadingTime}} min{{if .Draft}}, draft{{end}}</i>
     <br>
-    {{if .Description}}{{.Description}}{{else}}{{.Summary | truncate 10 }}{{end}} <a href="{{.Permalink}}">[Read More]</a>
+    {{if .Description}}{{.Description}}{{else}}{{.Summary | truncate 10 }}{{end}} <a href="{{.RelPermalink}}">[Read More]</a>
 </li>
 {{end}}
 </ul>

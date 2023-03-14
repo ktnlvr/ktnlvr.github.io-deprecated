@@ -1,14 +1,14 @@
 <footer>
     Built with <a href="https://gohugo.io/">Hugo</a> & <a href="https://latex.vercel.app/">LaTeX.css</a>
-    by Artur Roos (c) 2023. <a href="{{.Page.Permalink}}">Permalink</a>. <a href="#top">Top</a>. 
+    by Artur Roos (c) 2023. {{if not .Draft}}<a href="{{.Permalink}}">Permalink</a>.{{end}}<a href="#top">Top</a>. 
     <br>All posts are licensed under
     {{block "license" .}}
     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
     {{end}}
     {{if .IsPage}}
-    {{block "cite" .}}
-    Cite this as <a href="{{.Page.Permalink}}.bib">BibTex.</a>
-    {{end}}
+    {{if not .Draft}}{{block "cite" .}}
+    Cite this as <a href="{{.RelPermalink}}.bib">BibTex.</a>
+    {{end}}{{end}}
     This page was last modified {{.Lastmod | time.Format ":date_long"}}. Currently viewing commit <a href="https://github.com/Kittenlover229/rooftop/commit/{{.GitInfo.Hash}}">{{.GitInfo.AbbreviatedHash}}</a>.
     {{end}}
 </footer>
