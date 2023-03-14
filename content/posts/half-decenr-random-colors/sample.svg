@@ -1,0 +1,22 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" />
+<rect fill="#c5f9e1" x="0" y="0" width="100" height="100" />
+<rect fill="#d77fa0" x="100" y="0" width="100" height="100" />
+<rect fill="#5c402d" x="200" y="0" width="100" height="100" />
+<rect fill="#0b0e2f" x="300" y="0" width="100" height="100" />
+
+<rect fill="#6d6057" x="0" y="100" width="100" height="100" />
+<rect fill="#92b88c" x="100" y="100" width="100" height="100" />
+<rect fill="#64b970" x="200" y="100" width="100" height="100" />
+<rect fill="#bcc3b7" x="300" y="100" width="100" height="100" />
+
+<rect fill="#87c37a" x="0" y="200" width="100" height="100" />
+<rect fill="#b4b9d7" x="100" y="200" width="100" height="100" />
+<rect fill="#02db76" x="200" y="200" width="100" height="100" />
+<rect fill="#301951" x="300" y="200" width="100" height="100" />
+
+<rect fill="#a3c1ba" x="0" y="300" width="100" height="100" />
+<rect fill="#c9b9ee" x="100" y="300" width="100" height="100" />
+<rect fill="#43cf67" x="200" y="300" width="100" height="100" />
+<rect fill="#fdf4f7" x="300" y="300" width="100" height="100" />
+</svg>
