@@ -5,6 +5,8 @@
 ![License](https://img.shields.io/github/license/Kittenlover229/rooftop)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/Kittenlover229/rooftop)
 
+![Not By AI](https://notbyai.fyi/img/written-by-human-not-by-ai-black.svg)
+
 My personal blog hosted [here](https://kittenlover.dev).
 
 ## Licensing
