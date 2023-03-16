@@ -45,7 +45,7 @@
     stuff sometimes. Or check out my most recent posts:
     <ul>
         {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
-        <li><a href="{{ .Permalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .Date.Format "Monday, January 2, 2006" }})</a></li>
+        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .Date.Format "Monday, January 2, 2006" }})</a></li>
         {{end}}
     </ul>
 
