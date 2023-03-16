@@ -42,7 +42,12 @@
 
     <h2>Posts</h2>
     Check out all of my posts <a href="/posts">here</a>. I write about technical
-    stuff sometimes.
+    stuff sometimes. Or check out my most recent posts:
+    <ul>
+        {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
+        <li><a href="{{ .Permalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .Date.Format "Monday, January 2, 2006" }})</a></li>
+        {{end}}
+    </ul>
 
     <h2>Misc</h2>
     <address>
