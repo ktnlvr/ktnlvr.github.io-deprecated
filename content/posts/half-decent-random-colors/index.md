@@ -1,5 +1,5 @@
 ---
-title: "Why Are Random Colours So Hard Generate?"
+title: "Why Are Random Colours So Hard To Generate?"
 date: 2023-03-14T12:50:45,843206163+02:00
 draft: true
 description: Using the little things we know about colour and human eyes to define a better random colour generation technique. Answering a personal question born out of aesthetic frustration.
