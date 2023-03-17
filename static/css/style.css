@@ -60,3 +60,16 @@ html {
     visibility: visible;
     opacity: 1;
 }
+
+.footnotes {
+    border-top: 0;
+}
+
+
+sup::before {
+    content: '['
+}
+
+sup::after {
+    content: ']'
+}
