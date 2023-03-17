@@ -73,3 +73,8 @@ sup::before {
 sup::after {
     content: ']'
 }
+
+nav li::before {
+    content: "";
+    padding-right: 0;
+}
