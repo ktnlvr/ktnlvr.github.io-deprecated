@@ -1,8 +1,8 @@
 ---
-title: "Half-Decent Random Color Generation"
+title: "Why Are Random Colours So Hard Generate?"
 date: 2023-03-14T12:50:45,843206163+02:00
 draft: true
-description: Using the little things we know about colour and human eyes to define a better random colour generation technique.
+description: Using the little things we know about colour and human eyes to define a better random colour generation technique. Answering a personal question born out of aesthetic frustration.
 ---
 
 I am not a color scientist or a psychophysisist, but I know a thing or two about colour. 
@@ -10,32 +10,38 @@ The question of generating good-looking random colour has bugged me for a while 
 Most of the time the precision of it is really unnecessary, however, I still find it
 problematic. My first encounter with it was when one of my friends decided to 
 shade cubes in an application based on a seed value and a builtin `random` function.
-The result was underwhelming. Many times, 5 or 6 seed values later they settled
-on a decent one, but this problem hurt me. 
+The result was underwhelming. 5 or 6 seed values later the colours settled
+on a decent pallete, but this problem left a scar. 
 
-To understand what we can do, we first need to understand the nature of what exactly we
-are fixing. The colours were different wavelengths 
-of radiation are percieved differently by our eyes, that's what colour is. When an
-object deflects a certain wavelength of colour our eyes catch it and feel it as
-purple or green. An object is white when all light is reflected, black when all of it
-is absorbed. Great. Light sources work differently, they emit a specific wavelength:
-computer pixels emit a combination of RGB (red, green and blue) of different intensities.
-So if we just emit a random amount of each we get a truly random colour!
+After some time I pulled myself together and decided to look deeper: what
+was wrong about the colours that made me so negatively passionate towards
+a pixel? A lot, actually. My main issue was with brightness, they all looked
+awfully random. It wasn't the randomness I wanted.
+I much prefer the randomness to be skewed towards whatever 
+result pleases me more, and I have an ick I'm not alone in that[^x-com-randomness].
 
-{{< sidenote text="Just assume that `random::<u8>()` gives us a random byte in range [0; 255]. It is also a *uniform* random number generator, so every possible value is as likely to appear as all the others.">}}
-```rs
-pub fn random_colour() -> (u8, u8, u8) {
-    (random::<u8>(), random::<u8>(), random::<u8>())    
-}
-```
+The problem I was feeling with the random
+colours was actually the problem of colour uniformity. When describing a uniform
+pseudo-random number generator we say all values are equally likely. In case
+of random colour generation even though they are *(mathematically)cd  uniform*[^uniform-space-enc-of-math][^uniform-space-nlab], they
+are not *perceptually uniform*. Below is the example of mathematically uniform and
+perceptually uniform gradients, you can probably tell difference. 
+{{< center centered="![Mathematically Uniform Strip](./math_uniform_strip.svg)" >}}
+{{< center centered="![Perceptually Uniform Strip](./perceptually_uniform_strip.svg)" >}}
 
-This is where I would've left the article if we literally percieved the light as RGB.
-Yes, these three colours were chosen due to our eyes containing three types
-of photoreceptors to differentiate colour: the cones. However, as with all things, 
-there is a lot of nuance to human vision, so a *better* colour definetly
-requires more effort. The problems might become apparent when if we look
-at a colour sample results.
+On the mathematical strip there are spikes at yellow, cyan and a less noticeable one
+at purple. Keep in mind, we are doing phenomenology here, so the differences might
+be less pronounced to you spefically. The second spectra doesn't have those spikes.
 
-{{< center centered="![Sample Colours](./sample.svg)" >}}
+Ever wondered why heatmaps use the colours they use[^matplotlib-perceptually-uniform]? 
+One of the reasons is perceptual uniformity! No surprises here. So the person reading them doesn't perceive
+some areas as having more "heat".
 
-If you find that to be good enough, you are free to go. Personally, I am not satisfied.
+
+[^uniform-space-enc-of-math]: [Uniform Space](https://encyclopediaofmath.org/wiki/Uniform_space) as formally described by the Encyclopedia Of Math.
+[^uniform-space-nlab]: [Uniform Space](https://ncatlab.org/nlab/show/uniform+space) as formally described by nLab.
+[^x-com-randomness]: [Is XCOM Truly Random?](https://sinepost.wordpress.com/2012/11/11/is-xcom-truly-random/) **TL;DR**
+the game would sometimes miss a 98% chance of hit. Even though the internal
+dice were proven to be fair, the players, nevertheless, fealt like they were
+cheated. The fair randomness is not always the best pick for user experience.
+[^matplotlib-perceptually-uniform]: [Here](https://matplotlib.org/stable/tutorials/colors/colormaps.html) is an example of different heatmap colour palletes from one of the most popular Python data visualization libraries.
