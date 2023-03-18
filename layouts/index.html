@@ -25,19 +25,17 @@
     </ul>
 
     <h2>Projects</h2>
+    Look at the projects I am proud to show off here <a href="/projects">here</a>. 
+    I started programming as a side thing in 2017 in 5th grade as a hobby, but 
+    refused to attend any programming groups in my hometown. Around 2019
+    programming took on a more important role in my life due to my increasing
+    interest in mathematics. Most of the project I've done over the years
+    will be never see the light of day, since I did not bother myself with
+    keeping a comprehensive log of what I have and have not done.
     <ul>
-        <li><a href="https://github.com/Kittenlover229/tangerine" target="_blank">tangerine</a> - a collection of
-            classical and custom
-            beginner-level Python3.X compsci exercises for a small programming club in my school.</li>
-        <li><a href="https://github.com/Kittenlover229/tinytest" target="_blank">tinytest</a> - zero-dependency
-            zero-warning header-only
-            single-header testing framework written entirely in ANSI C.</li>
-        <li><a href="https://github.com/Kittenlover229/rooftop" target="_blank">rooftop</a> - a static website for my
-            portfolio &
-            personal blog that you are looking at right now. Powered by Hugo and it's markdown engine.</li>
-        <li><a href="https://github.com/Kittenlover229/Asteroids" target="_blank">Asteroids</a> - a harmless asteroids
-            clone built on
-            top of olcPixelGameEngine. Unfinished as of 25/02/23, but still good work.</li>
+        {{ range ( where .Site.RegularPages "Type" "projects" | first 3 ) }}
+        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .Date.Format "Monday, January 2, 2006" }})</a>.<br> {{.Description}}</li>
+        {{end}}
     </ul>
 
     <h2>Posts</h2>
