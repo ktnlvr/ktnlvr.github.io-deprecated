@@ -18,12 +18,12 @@ was wrong about the colours that made me so negatively passionate towards
 a pixel? A lot, actually. My main issue was with brightness, they all looked
 awfully random. It wasn't the randomness I wanted.
 I much prefer the randomness to be skewed towards whatever 
-result pleases me more, and I have an ick I'm not alone in that[^x-com-randomness].
+result pleases me more, and I have an feeling I'm not alone in that[^x-com-randomness].
 
 The problem I was feeling with the random
 colours was actually the problem of colour uniformity. When describing a uniform
 pseudo-random number generator we say all values are equally likely. In case
-of random colour generation even though they are *(mathematically)cd  uniform*[^uniform-space-enc-of-math][^uniform-space-nlab], they
+of random colour generation even though they are *(mathematically) uniform*[^uniform-space-enc-of-math][^uniform-space-nlab], they
 are not *perceptually uniform*. Below is the example of mathematically uniform and
 perceptually uniform gradients, you can probably tell difference. 
 {{< center centered="![Mathematically Uniform Strip](./math_uniform_strip.svg)" >}}
