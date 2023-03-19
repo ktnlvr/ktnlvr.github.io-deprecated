@@ -4,11 +4,9 @@ title = "Kittenlover's Rooftop"
 enableGitInfo = true
 enableRobotsTXT = true
 rssLimit = 20
-
 [minify]
   disableCSS = false
   minifyOutput = true
-
 [markup]
   [markup.highlight]
     anchorLineNos = true
@@ -28,6 +26,8 @@ rssLimit = 20
     isPlainText = true
     mediaType = 'text/bibtex'
     permalinkable = true
-
 [outputs]
   page = ['HTML', 'BIBCITE']
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'

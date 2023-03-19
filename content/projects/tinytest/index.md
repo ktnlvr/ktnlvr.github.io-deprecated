@@ -1,9 +1,11 @@
 ---
 title: "Tinytest"
 date: 2022-04-22T22:26:00,000+03:00
+publishDate: 2023-03-20T00:27:27,486059205+02:00
 draft: false
 description: Miniscule C99 library for collecting and running tests.
 github: https://github.com/Kittenlover229/tinytest/tree/f628854e1d2d506f8406f7f63026552257b0ceda
+tags: ['C', 'pet-project', 'opinionated']
 ---
 
 ## What is `tinytest`? 

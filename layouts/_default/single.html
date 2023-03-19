@@ -2,9 +2,14 @@
     <h1>{{.Title}}</h1>
     {{if .Description}}
     <div class="abstract">
+        <p class="taglist">
+            Tags: {{ range $i, $e := .Params.tags -}}
+            <a href='{{ "/tags/" | relLangURL }}{{ . | urlize }}'>{{ $e | humanize | title }}</a>
+            {{- end -}}
+        </p>
         {{.Description}}
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
-        <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .Date}}</p>
+        <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
         {{if .Draft}}<b><i>Beware: this is a draft! Any line of this might change at any moment!</i></b>{{end}}
     </div>
     {{end}}
