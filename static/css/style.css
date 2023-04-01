@@ -93,3 +93,7 @@ nav li::before {
     font-style: italic;
     text-decoration: none;
 }
+
+table {
+    margin: 4% 0 4% 0;
+}
