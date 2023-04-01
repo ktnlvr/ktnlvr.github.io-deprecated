@@ -41,10 +41,19 @@ Var(a);
 Var(b);
 Var(c);
 int main() {
-
   using e1 = I; // a(a)
   using e2 = S::apply<K::apply<S::apply<I>>>::apply<K>;
   using e3 = e2::apply<a>::apply<b>;
   using e4 = a::apply<b>;
+  using e5 = S::apply<K>::apply<K::apply<K>>;
+  using e6 = e5::apply<a>;
+
+  using T = K;
+  using F = S::apply<K>;
+  using NOT = S::apply<K>::apply<K>;
+
+  using e7 = T::apply<NOT>;
+  using e8 = F;
+
   return 0;
 }

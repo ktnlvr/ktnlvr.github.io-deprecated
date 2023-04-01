@@ -71,7 +71,7 @@ We have established a way of reading the notation, so let's look into how a tran
 +-------------------------------------+
 ```
 
-Feel free to look over it several times and try doing it by yourself, that will only help your understanding of combinators. If you want to validate your understanding try simplifying `S(K(SI))K`, we will return to that specific combinator in the next section.
+Feel free to look over it several times and try doing it by yourself, that will only help your understanding of combinators. If you want to validate your understanding try simplifying `S(K(SI))K`, we will return to that specific combinator in the next section. Alternatively, you may also look at `SK(KK)`.
 
 ## Abuse Of Type Inference
 
@@ -92,7 +92,8 @@ The combinator above is our trusty identity function. It returns whatever type w
 ```cpp
 // Kxy -> x
 struct K2 {
-    template <typename X> struct K1 {
+    template <typename X> 
+    struct K1 {
         template <typename Y> 
         using apply = X;
     };
@@ -106,14 +107,19 @@ using K = K2;
 ```cpp
 // Sxyz -> xz(yz)
 struct S3 {
-  template <typename X, typename Y> struct S1 {
+  template <typename X, typename Y> 
+  struct S1 {
     // FIXME?
-    template <typename Z> using helper = typename Y::apply<Z>;
-    template <typename Z> using apply = typename X::apply<Z>::apply<helper<Z>>;
+    template <typename Z> 
+    using helper = typename Y::apply<Z>;
+    template <typename Z>
+    using apply = typename X::apply<Z>::apply<helper<Z>>;
   };
 
-  template <typename X> struct S2 {
-    template <typename Y> using apply = S1<X, Y>;
+  template <typename X> 
+  struct S2 {
+    template <typename Y> 
+    using apply = S1<X, Y>;
   };
 
   template <typename X> using apply = S2<X>;
@@ -128,8 +134,10 @@ When explainaing combinators we denoted a combinator placeholder with lowercase 
 
 ```cpp
 #define Var(ch)
-    template <typename... Args> struct _##ch {
-        generic(X) using apply = _##ch<Args..., X>; 
+    template <typename... Args> 
+    struct _##ch {
+        template <typename X> 
+        using apply = _##ch<Args..., X>; 
     }; 
     using ch = _##ch<>;
 
@@ -138,27 +146,45 @@ Var(b);
 Var(c);
 ```
 
-At last, we may input the combinator previously given to test your knowledge as input and see the deduced type. 
+At last, we may input the previously mentioned combinator expressions and see what they evaluate to.
 
 ```cpp
 // S(K(SI))K
 using R = S::apply<K::apply<S::apply<I>>>::apply<K>;
 using result = R::apply<a>::apply<b>;  
+
+// SK(KK)
+using I = S::apply<K>::apply<K::apply<K>>;
+using result = I::apply<a>;
 ```
 
-So the result is deduced to be `R a b = b a = R(a)(b) = b(a) = _a<b>`. This combinator reverses the terms, wonderful. If you were following along an this is your result, congratulations.
+## More Interesting Stuff
 
-## Actually Doing Something
+As previously mentioned, SKI Combinators can be used to encode logic, the simplest of all logics is the boolean logic. The **K** combinator is a great starting. The **K** gives us the first of it's arguments, and if we combine **S** and **K** like **SK**, we have a combinator that gives us it's second argument. Wonderful. All of boolean logic can be encoded using *if-then-else* expressions, and the combinators above let us return one combinator or another, based on their own value. We formally define them as follows:
+
+| Combinator  | Lambda Calculus |  Rewrite Rule      | SKI Encoded         |
+| ----------- | --------------- |  ----------------- | ------------------- |
+| T           | λx.λy.x         |  **T**xy → x       | `K`                 |
+| F           | λx.λy.y         |  **F**xy → y       | `KS`                |
+
+Since we have our *if-then-else* clause we can define more complex structures, like basic logic operations: not, or, and.
+
+Not is the simplest of the bunch, we expect it to return `F` when given `T` and `T` when given `F`. But how can we actually encode behaviour if the combinator rules don't know anything about the combinators they are operating on? Simple, postfix notation. Assuming we are only going to be using the boolean logic combinators for these expressions, we can encode `not` in postfix notation like so: `FT = SKK`.
+
+| Combinator  | Lambda Calculus |  Rewrite Rule      | SKI Encoded         |
+| ----------- | --------------- |  ----------------- | ------------------- |
+| T           | λx.λy.x         |  **T**xy → x       | `K`                 |
+| F           | λx.λy.y         |  **F**xy → y       | `KS`                |
+
+## Conclusion
+
+Congrats! Your favourite compiled language doubles as a proof assistant!
 
 ## See Also
 
 1. Raymond Smullyan's ["To Mock A Mockingbird"](https://isbnsearch.org/isbn/0192801422). A gentle introduction to combinatory logic, presented as a series of recreational puzzles using bird watching metaphors.
 2. A [wonderful post](https://doisinkidney.com/posts/2020-10-17-ski.html) on SKI Combinators by Donnacha Oisín Kidney.
 3. The Y-Combinator on [Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI&ab_channel=Computerphile) explained by Graham Hutton. 
-
-## Conclusion
-
-Congrats! Your favourite compiled language doubles as a proof assistant!
 
 [^nlab-lcalc]: [Lambda Calculus](https://ncatlab.org/nlab/show/lambda-calculus) on nLab.
 [^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
