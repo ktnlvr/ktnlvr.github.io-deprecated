@@ -73,15 +73,94 @@ We have established a way of reading the notation, so let's look into how a tran
 
 Feel free to look over it several times and try doing it by yourself, that will only help your understanding of combinators. If you want to validate your understanding try simplifying `S(K(SI))K`, we will return to that specific combinator in the next section.
 
-## The Code
+## Abuse Of Type Inference
 
-That is all well and good, but what can we do with this? We can play around a bit, trying out different combinations to see just how far we can stretch this. Sure, we can make a runtime with several types of objects all implementing some common interface, but that's no fun. I desire to compute them unusually, at compile time, just for the sake of it, for no particular reason. To do that we are going to express combinators and their half-applied states as structs, whereas function application will be actual type instantiation!
+That is all well and good, but what can we do with this? We can play around a bit, trying out different combinations to see just how far we can stretch this. Sure, we can make a runtime with several types of objects all implementing some common interface, but that's no fun. I desire to compute them unusually, at compile time, just for the sake of it, for no particular reason. To do that we are going to express combinators and their half-applied states as structs, whereas function application will be an type instantiation. 
 
-## Putting It Together
+For those unfamiliar with the lingo, type instantiation is the process of turning a type template into a template, every time you write `std::vector<int>` you instantiate a type `std::vector<int>` based on a template of `std::vector<T, Allocator>`. That's the reason for putting `<>` after a template name, even when all template parameters have a default value. 
+
+```cpp
+// Ix -> x
+struct I {
+    template <typename T> 
+    using apply = T; 
+};
+```
+
+The combinator above is our trusty identity function. It returns whatever type was it's argument. Sure, it might not seem as useful as the others, but in certain conditions we would like our combinators to not affect their inputs. You instantiate it with some other type by saying `I::apply<int>`, which will give you back `int`. No surprises here. For more complex combinators the C++'s type inference system will be the one to apply the rules, we simply need to encode them in the language that it understands, the template language.
+
+```cpp
+// Kxy -> x
+struct K2 {
+    template <typename X> struct K1 {
+        template <typename Y> 
+        using apply = X;
+    };
+
+    template <typename X> 
+    using apply = K1<X>;
+};
+
+using K = K2;
+```
+```cpp
+// Sxyz -> xz(yz)
+struct S3 {
+  template <typename X, typename Y> struct S1 {
+    // FIXME?
+    template <typename Z> using helper = typename Y::apply<Z>;
+    template <typename Z> using apply = typename X::apply<Z>::apply<helper<Z>>;
+  };
+
+  template <typename X> struct S2 {
+    template <typename Y> using apply = S1<X, Y>;
+  };
+
+  template <typename X> using apply = S2<X>;
+};
+
+using S = S3;
+```
+
+A binary `K` is denoted as `K2`, while a partially-applied `K2` is denoted `K1`, the number after the combinator letter expresses its arity (the amount of arguments it accepts[^arity]).
+
+When explainaing combinators we denoted a combinator placeholder with lowercase letters. They help make everything more visual and less abstract, so let's define that too. Since we never know how many arguments we may try and supply to the combinator we make them variadic. We will define several letters, so makes sense to turn them into a macro.
+
+```cpp
+#define Var(ch)
+    template <typename... Args> struct _##ch {
+        generic(X) using apply = _##ch<Args..., X>; 
+    }; 
+    using ch = _##ch<>;
+
+Var(a);
+Var(b);
+Var(c);
+```
+
+At last, we may input the combinator previously given to test your knowledge as input and see the deduced type. 
+
+```cpp
+// S(K(SI))K
+using R = S::apply<K::apply<S::apply<I>>>::apply<K>;
+using result = R::apply<a>::apply<b>;  
+```
+
+So the result is deduced to be `R a b = b a = R(a)(b) = b(a) = _a<b>`. This combinator reverses the terms, wonderful. If you were following along an this is your result, congratulations.
+
+## Actually Doing Something
+
+## See Also
+
+1. Raymond Smullyan's ["To Mock A Mockingbird"](https://isbnsearch.org/isbn/0192801422). A gentle introduction to combinatory logic, presented as a series of recreational puzzles using bird watching metaphors.
+2. A [wonderful post](https://doisinkidney.com/posts/2020-10-17-ski.html) on SKI Combinators by Donnacha Oisín Kidney.
+3. The Y-Combinator on [Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI&ab_channel=Computerphile) explained by Graham Hutton. 
+
 ## Conclusion
 
 Congrats! Your favourite compiled language doubles as a proof assistant!
 
 [^nlab-lcalc]: [Lambda Calculus](https://ncatlab.org/nlab/show/lambda-calculus) on nLab.
-[^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types.
+[^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
 [^turing-complete-templates]: Oh yes, the templates really are turing complete, [even cppref admits it](https://en.cppreference.com/w/cpp/language/template_metaprogramming).
+[^arity]: Arity is just how many arguments the function expects. You already heard in words like "bin**ary**" and "un**ary**". [Arity](https://ncatlab.org/nlab/show/arity) on nLab (abstraction warning).
