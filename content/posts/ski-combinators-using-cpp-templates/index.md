@@ -4,23 +4,20 @@ date: 2023-03-30T20:19:21,513889181+03:00
 draft: true
 ---
 
-Combinatory logic is an alternative to lambda calculus[^nlab-lcalc], which does not use variables. In this sence it is akin to tacit (aka point-free, not to be confused with pointless) programming, a paradigm which also avoids using variables. If you are a big stack-oriented language enjoyer you already know what this is about. This idea has seen a recent explosion in popularity, due to functional languages attracting attention. A combinator is a higher-order function (aka can accept other functions as arguments) that uses other combinators and function application to compute itself.
+Combinatory logic is an alternative to lambda calculus[^nlab-lcalc], which does not use variables. In this sence it is akin to tacit (aka point-free, not to be confused with pointless) programming, a paradigm which also avoids using variables. If you are a big stack-oriented language enjoyer you already know what this is about. This idea has seen a recent explosion in popularity, due to functional languages attracting attention. A combinator is a higher-order function (aka can accept other functions as arguments) that uses other combinators and function application to compute itself. The only objects in SKI Calculus are combinators: no numbers, no booleans, no sum or product types, just functions. You would probably be surprised to know that functions are enough to have fun, especially if we assign special meaning to some of them, but I'm getting ahead of myself.
 
 But what does C++ have to do with any of this? Like someone who did too many extracurricular activities as a child, it is capable, but traumatized. As a result of being pulled in too many directions the language has a set of niche, but powerful features. One of these features is templates, the elder brother of generics. They can be difficult even for experienced programmers, especially when encountering something like dependent types[^dependent-T] or templated template parameters. They are complex enough to be turing complete[^turing-complete-templates]. You know what else is turing complete? SKI Combinators!
 
 ## Theory
 
-There are several different combinator logics, but I would like to focus your attention on SKI Combinators (later SKI). I claim they are simpler to understand than the other systems, while remaining capable, besides, all the other combinator logics can be expressed using SKI. So what are S, K and I? The names of the combinators we are going to use. They can be formally defined as follows:
+There are several different combinator logics, but I would like to focus your attention on SKI Combinators (later SKI). I claim they are simpler to understand than the other systems, while remaining capable, besides, all the other combinator logics can be expressed using SKI. So what are S, K and I? 
 
-| Combinator  | Lambda Calculus |  Rewrite Rule      | Curried Functions         |
-| ----------- | --------------- |  ----------------- | ------------------------- |
-| I           | λx.x            |  **I**x → x        | `f(x) = x`                |
-| K           | λx.λy.x         |  **K**xy → x       | `f(x)(y) = x`             |
-| S           | λx.λy.λz.xz(yz) |  **S**xyz → xz(yz) | `f(x)(y)(z) = x(z)(y(z))` |
+They are transformation rules. Since combinators are functions, they have arguments and return values. Think of them as rearranging operation: the arguments is the data to transform and the return value is the data rearranged. For instance, the **K** Combinator has a rule **K**xy → x. We can see it in action in an expression like "`Kab`". If we translate that into action, that would just mean "take the next two terms after you and replace yourself with the first term". That would map "`Kab`" to "`a`". We call this tranformation "applying a combinator", same way you would apply a function.
 
-If the formal notation doesn't give you anything to work with, worry not, you are not alone. They might seem very random, but trust me, specifically these ones are powerful enough. As previously mentioned, other combinator logics also exist, but their combinators can be expressed as a combination of I, K & S. We will discuss more complex and interesting combinators shortly.
+Combinators are left associative, that means that `x y z = (x y) z`. That might some non-impactful, but `K (I S)` and `(K I) S` are two very different expressions, as we will discover shortly. In this case parentheses work same way as in classical algebra.
 
-Here, the "Curried Functions" column is of most interest to us. A curried function, is a function that instead of accepting all of it's arguments at once accepts them one by one. In languages that lack first class support for this feature this is implemented by returning a partially applied function, that partially applied function is a function with some of the arguments supplied.
+Combinators are "curried", that is to say accept arguments in an unusual way. Instead of accepting all the arguments at once, they transition into a special "partially-applied" state, where they can accept the next argument. When all the arguments are recieved the combinator is considered fully applied and evaluated. See for yourselves in the example below:
+
 
 ```cpp
 const auto classical_max = 
@@ -39,52 +36,50 @@ classical_max(1, 2)  // 2
 curried_max(1)(2)    // 2
 ```
 
-Let's return our attention to the table, but now to the "Rewrite Rule" column. It expresses the same idea as currying, but in terms of strings. If we imagine a string `"Sa(b(c))d"` we would rearrange the terms following `K` to comply with the rewrite rule _**S**xyz → xz(yz)_, like so: `"a(d)((b(c))(d))"`. Parenthesis are giving off a strong Lisp vibe, so we'd be better off without them: `"a d (b c d)"`. Notice how we can not drop parenthesis around `b c d`, since that would make them into the arguments of `a`. We are going to be using the "as little parentheses as possible" notation extensively, so spend some time getting used to it, it is much easier on the eyes when talking about curried functions; compare `D(a)(A(b)(c))(d)(e)` and `F g (H u v) p q`. Here all the `a`s and `b`s are placeholders for other combinators to take place of, not variables in the traditional programming sense. In the context of curried function a partially-applied function is completely valid, so we are free to write just `I`, even though `I` has to accept an argument.
+Here we use two different functions. `classical_max` is a usual function, while `curried_max` is curried. That might seem like a more complicated to call the function, however, this partially applied state will allow us to generate new combinators. 
 
-We have established a way of reading the notation, so let's look into how a transformation like that would actually work. It's actually rather simple: just apply the rule of the leftmost combinator to it's respective arguments, bingo! Below you can see the list of rules being applied one by one to string `"(SKII)a"`:
 
-```
-+-------------------------------------+
-|    initial state is:                |
-|                                     |
-|    (S K I I) a                      |
-+-------------------------------------+
-|    apply rule Sxyz -> xz(yz)        |
-|                                     |
-|     S x y z            x z (y z)    |
-|    (S K I I) a   ->   (K I (I I)) a |
-+-------------------------------------+
-|    apply rule Kxy -> x              |
-|                                     |
-|     K x  yyy          x             |
-|    (K I (I I)) a  ->   I a          |
-+-------------------------------------+
-|    apply rule Ix -> x               |
-|                                     |
-|    I x    x                         |
-|    I a -> a                         |
-+-------------------------------------+
-|    a                                |
-|                                     |
-|    no more rules to apply           |
-|    transformation done              |
-+-------------------------------------+
-```
 
-Feel free to look over it several times and try doing it by yourself, that will only help your understanding of combinators. If you want to validate your understanding try simplifying `S(K(SI))K`, we will return to that specific combinator in the next section. Alternatively, you may also look at `SK(KK)`.
+| Combinator  |  Rewrite Rule      | Example                         |
+| ----------- |  ----------------- | ------------------------------- |
+| I           |  **I**x → x        | (**I**u)v → uv                  |
+| K           |  **K**xy → x       | **I**(**K**ab) → **I**b → b     |
+| S           |  **S**xyz → xz(yz) | **SK**fg → **K**g(fg) → g       |
+
+The table above describes how specific combinators operate on their inputs. When computing combinators we  apply the rule of the leftmost combinator step by step. If this combinator is a placeholder, we just look for the next leftmost combinator. If there are no more combinators we stop, the expression is considered "simplified" or "normalized". We may more closely inspect the transformation for the last example, since it is the most complex one.
+
+**SK**fg. *Our initial state. The leftmost combinator is **S**. We rewrite our initial state according to rule **S**. In this context, `x` = **K**, `y` = `f`, `z` = `g`. They are rearanged to become* **K**g(fg). *Now we apply rule **K**. In the context of **K**, `x` = `g` and `y` = `(fg)`.* g. *No more rules to apply, simplification done.* **SK**fg → **K**g(fg) → g.
+
+This process can go in two different ways: root-first or leaf-first. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italic text after the combinator is the applied rule):
+
+| Root-First     | Leaf-First   |
+| -------------- | -----------  |
+| **SKII**  *init*              |
+| **KI**(**II**) *S*            |
+| **I** *K*      | **KII** *I*  |
+| **I**          | **I** *K*    |
+| **I** *done*                  |
+
+It rarely makes sense to first evaluate the deepest expression first (that is to say, never in my experience), like in the example above leaf-first took one more step to execute. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
 
 ## Abuse Of Type Inference
 
-That is all well and good, but what can we do with this? We can play around a bit, trying out different combinations to see just how far we can stretch this. Sure, we can make a runtime with several types of objects all implementing some common interface, but that's no fun. I desire to compute them unusually, at compile time, just for the sake of it, for no particular reason. To do that we are going to express combinators and their half-applied states as structs, whereas function application will be an type instantiation. 
+That is all well and good, but what can we do with this? We can play around a bit, trying out different combinations to see just how far we can stretch this. Sure, we can make a runtime with several types of objects all implementing some common interface, but that's no fun. I desire to compute them unusually, at compile time, just for the sake of it, for no particular reason. To do that we are going to express combinators and their half-applied states as structs, whereas function application will be a type instantiation. 
 
-For those unfamiliar with the lingo, type instantiation is the process of turning a type template into a template, every time you write `std::vector<int>` you instantiate a type `std::vector<int>` based on a template of `std::vector<T, Allocator>`. That's the reason for putting `<>` after a template name, even when all template parameters have a default value. 
+For those unfamiliar with the lingo, type instantiation is the process of turning a type template into a type, every time you write `std::vector<int>` you instantiate a type `std::vector<int>` based on a template of `std::vector<T, Allocator>`. That's the reason for putting `<>` after a template name, even when all template parameters have a default value. 
 
 ```cpp
+// Imagine all the required imports for futher snippets
+using namespace std;
+
 // Ix -> x
 struct I {
     template <typename T> 
     using apply = T; 
 };
+
+static_assert(is_same_v<I::apply<int>, int>); // Passes!
+static_assert(is_same_v<I::apply<I::apply<int>>, int>); // Also, passes!
 ```
 
 The combinator above is our trusty identity function. It returns whatever type was it's argument. Sure, it might not seem as useful as the others, but in certain conditions we would like our combinators to not affect their inputs. You instantiate it with some other type by saying `I::apply<int>`, which will give you back `int`. No surprises here. For more complex combinators the C++'s type inference system will be the one to apply the rules, we simply need to encode them in the language that it understands, the template language.
@@ -133,7 +128,7 @@ A binary `K` is denoted as `K2`, while a partially-applied `K2` is denoted `K1`,
 When explainaing combinators we denoted a combinator placeholder with lowercase letters. They help make everything more visual and less abstract, so let's define that too. Since we never know how many arguments we may try and supply to the combinator we make them variadic. We will define several letters, so makes sense to turn them into a macro.
 
 ```cpp
-#define Var(ch)
+#define define_combinator_placeholder(ch)
     template <typename... Args> 
     struct _##ch {
         template <typename X> 
@@ -141,9 +136,9 @@ When explainaing combinators we denoted a combinator placeholder with lowercase 
     }; 
     using ch = _##ch<>;
 
-Var(a);
-Var(b);
-Var(c);
+define_combinator_placeholder(a);
+define_combinator_placeholder(b);
+define_combinator_placeholder(c);
 ```
 
 At last, we may input the previously mentioned combinator expressions and see what they evaluate to.
@@ -157,6 +152,8 @@ using result = R::apply<a>::apply<b>;
 using I = S::apply<K>::apply<K::apply<K>>;
 using result = I::apply<a>;
 ```
+
+## One J To Rule Them All
 
 ## String Parsing
 
