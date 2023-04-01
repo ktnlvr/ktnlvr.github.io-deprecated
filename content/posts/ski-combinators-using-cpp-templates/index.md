@@ -158,7 +158,11 @@ using I = S::apply<K>::apply<K::apply<K>>;
 using result = I::apply<a>;
 ```
 
-## More Interesting Stuff
+## String Parsing
+
+## Any Input To Any Output
+
+## Boolean Logic
 
 As previously mentioned, SKI Combinators can be used to encode logic, the simplest of all logics is the boolean logic. The **K** combinator is a great starting. The **K** gives us the first of it's arguments, and if we combine **S** and **K** like **SK**, we have a combinator that gives us it's second argument. Wonderful. All of boolean logic can be encoded using *if-then-else* expressions, and the combinators above let us return one combinator or another, based on their own value. We formally define them as follows:
 
@@ -175,6 +179,8 @@ Not is the simplest of the bunch, we expect it to return `F` when given `T` and 
 | ----------- | --------------- |  ----------------- | ------------------- |
 | T           | λx.λy.x         |  **T**xy → x       | `K`                 |
 | F           | λx.λy.y         |  **F**xy → y       | `KS`                |
+
+## Recursion, Rule 110
 
 ## Conclusion
 
