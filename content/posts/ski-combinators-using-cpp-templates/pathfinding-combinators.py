@@ -1,4 +1,4 @@
-expr = "S(K(SI))K   ab"
+expr = "S(K(SI))K ab"
 
 expr = expr.replace(' ', '')
 
@@ -38,6 +38,15 @@ def simplify(input: list[str | list]) -> list[str | list] | str:
         case _:
             return input
 
+def stringify(input: list) -> str:
+    match input:
+        case [[*ls], *rest]:
+            return f"({stringify(ls)})" + stringify(rest)
+        case [*ls]:
+            return ''.join(ls)
+        case _:
+            return input
 
 parsed = parse_ski(expr)
-print(simplify(parsed))
+print(simple := simplify(parsed))
+print(stringify(simple))
