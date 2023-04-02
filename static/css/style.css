@@ -97,3 +97,16 @@ nav li::before {
 table {
     margin: 4% 0 4% 0;
 }
+
+#TableOfContents {
+    position: fixed;
+}
+
+#TableOfContents > ul::before {
+    content: 'Table Of Contents';
+    font-weight: bold;
+}
+
+#TableOfContents > ul > li::before {
+    padding-left: 20px;
+}
