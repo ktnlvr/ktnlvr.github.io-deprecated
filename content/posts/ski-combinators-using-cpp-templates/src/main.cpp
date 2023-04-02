@@ -10,31 +10,44 @@ using namespace std;
 
 struct K2 {
   template <typename X> struct K1 {
-    template <typename Y> using apply = X;
+    template <typename Y> 
+    using apply = X;
   };
 
-  template <typename X> using apply = K1<X>;
+  template <typename X> 
+  using apply = K1<X>;
 };
 
 using K = K2;
 
 struct S3 {
   template <typename X, typename Y> struct S1 {
-    template <typename Z> using helper = typename Y::apply<Z>;
-    template <typename Z> using apply = typename X::apply<Z>::apply<helper<Z>>;
+    template <typename Z> 
+    using helper = typename Y::apply<Z>;
+
+    template <typename Z> 
+    using apply = typename X::apply<Z>::apply<helper<Z>>;
   };
 
   template <typename X> struct S2 {
-    template <typename Y> using apply = S1<X, Y>;
+    template <typename Y> 
+    using apply = S1<X, Y>;
   };
 
-  template <typename X> using apply = S2<X>;
+  template <typename X> 
+  using apply = S2<X>;
 };
 
 using S = S3;
 
 struct I {
-  template <typename X> using apply = X;
+  template <typename X> 
+  using apply = X;
+};
+
+struct J {
+  template <typename X> 
+  using apply = typename X::apply<S>::apply<K>;
 };
 
 Var(a);
@@ -47,13 +60,7 @@ int main() {
   using e4 = a::apply<b>;
   using e5 = S::apply<K>::apply<K::apply<K>>;
   using e6 = e5::apply<a>;
-
-  using T = K;
-  using F = S::apply<K>;
-  using NOT = S::apply<K>::apply<K>;
-
-  using e7 = T::apply<NOT>;
-  using e8 = F;
+  using e7 = J::apply<J>::apply<a>; // I expressed with Iota
 
   return 0;
 }

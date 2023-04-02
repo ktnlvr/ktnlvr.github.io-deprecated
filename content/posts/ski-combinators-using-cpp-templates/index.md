@@ -5,6 +5,8 @@ description: Describing all of SKI Combinator calculus using C++ templates.
 draft: true
 ---
 
+## Introduction
+
 Combinatory logic is an alternative to lambda calculus[^nlab-lcalc], which does not use variables. In this sence it is akin to tacit (aka point-free, not to be confused with pointless) programming, a paradigm which also avoids using variables. If you are a big stack-oriented language enjoyer you already know what this is about. This idea has seen a recent explosion in popularity, due to functional languages attracting attention. A combinator is a higher-order function (aka can accept other functions as arguments) that uses other combinators and function application to compute itself. The only objects in SKI Calculus are combinators: no numbers, no booleans, no sum or product types, just functions. You would probably be surprised to know that functions are enough to have fun, especially if we assign special meaning to some of them, but I'm getting ahead of myself.
 
 But what does C++ have to do with any of this? Like someone who did too many extracurricular activities as a child, it is capable, but traumatized. As a result of being pulled in too many directions the language has a set of niche, but powerful features. One of these features is templates, the elder brother of generics. They can be difficult even for experienced programmers, especially when encountering something like dependent types[^dependent-T] or templated template parameters. They are complex enough to be turing complete[^turing-complete-templates]. You know what else is turing complete? SKI Combinators!
@@ -61,7 +63,7 @@ This process can go in two different ways: root-first or leaf-first. The first a
 | **I**          | **I** *K*    |
 | **I** *done*                  |
 
-It rarely makes sense to first evaluate the deepest expression first (that is to say, never in my experience), like in the example above leaf-first took one more step to execute. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
+It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above leaf-first took one more step to execute. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
 
 ## Abuse Of Type Inference
 
@@ -156,6 +158,27 @@ using result = I::apply<a>;
 
 ## One J To Rule Them All
 
+If you read this far, congratulations. You probably understand more about combinators than 99.9% of the earth's population. A rather niche skill, ey? As we already saw, complex result can emerge from rather simple (albeit seemingly random) behaviour. As mentioned in the introduction, SKI calculus is the simplest calculus there is, since all other calculi can be expressed using it. That was a lie. The thing is, we can express the **I** combinator in terms of **S** & **K**, it would look something like **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (it is actually called that sometimes).
+
+But we can reduce calculus even further! Introducing ι (iota or jot), the mother of j, so let **J** be the letter to denote it. First discovered by Chris Barker[^barker-iota], if we define **J**x → x**SK**, we can reconstruct all the other combinators through it. Based on it's arguments **J** can compute into combinators of different arity, depending on "x". That makes it very special, since it's the only combinator we've seen so far with variable arity, but we will see more of that in the future. The table below shows how exactly all the combinators can be reconstructed. 
+
+| Combinator  | Jot Expansion                                                              |
+| ----------- | -------------------------------------------------------------------------- |
+| J           | **J**                                                                      |
+| I           | _root-first_ **JJ** → (**JS**)**K** → **SSKK** → **SK**(**KK**) → **I**    |
+| K (*part 1*)| _leaf-first_ **J**(**J**(**JJ**)) → **J**(**JI**) → **J**((**IS**)**K**) → |
+| K (*part 2*)| → **J**(**SK**) → **SKSK** → **KK**(**SK**) → **K**                        |
+| S           | _root-first_ **J**(**J**(**J**(**JJ**))) → **JK** → **KSK** → **S**        |
+
+This simplicity made it popular amongst logical minimalists and birthed several Turing tarpit[^turing-tarpit] languages[^iota-esolang]. Let's define that wonderful monstrosity in our C++ code. We are doing templates, haven't you forgot?
+
+```cpp
+struct J {
+  template <typename X> 
+  using apply = typename X::apply<S>::apply<K>;
+};
+```
+
 ## String Parsing
 
 ## Any Input To Any Output
@@ -194,3 +217,6 @@ Congrats! Your favourite compiled language doubles as a proof assistant!
 [^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
 [^turing-complete-templates]: Oh yes, the templates really are turing complete, [even cppref admits it](https://en.cppreference.com/w/cpp/language/template_metaprogramming).
 [^arity]: Arity is just how many arguments the function expects. You already heard in words like "bin**ary**" and "un**ary**". [Arity](https://ncatlab.org/nlab/show/arity) on nLab (abstraction warning).
+[^barker-iota]: Chrid Barker's "[Iota and Jot: the simplest language?](https://web.archive.org/web/20091116052048/http://semarch.linguistics.fas.nyu.edu/barker/Iota/)" on wayback machine.
+[^turing-tarpit]: [Turing Tarpit](https://esolangs.org/wiki/Turing_tarpit) as defined by https://esolangs.org.
+[^iota-esolang]: [Iota](https://esolangs.org/wiki/Iota), the esoteric programming language on https://esolangs.org.
