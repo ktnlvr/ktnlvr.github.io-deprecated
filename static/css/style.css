@@ -11,7 +11,7 @@ footer {
     height: 30vh;
     transform: translate(0, 70vh);
     pointer-events: none;
-    background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255, 255, 255, 0) 100%);
 }
 
 .list-of-posts {
@@ -22,7 +22,7 @@ footer {
     padding-left: 5%;
 }
 
-.list-of-posts > li:not(:last-child) {
+.list-of-posts>li:not(:last-child) {
     margin-bottom: 5%;
 }
 
@@ -33,7 +33,7 @@ footer {
 }
 
 .unlisted:hover {
-    opacity:  67%;
+    opacity: 67%;
 }
 
 a.article-title {
@@ -46,12 +46,12 @@ a.article-title {
     padding: 0px;
 }
 
-#breadcrumbs > li {
+#breadcrumbs>li {
     display: inline;
     padding-left: 5px;
 }
 
-#breadcrumbs > li > a {
+#breadcrumbs>li>a {
     color: var(--body-color);
 }
 
@@ -84,11 +84,11 @@ nav li::before {
     font-size: 16px;
 }
 
-.taglist > a:not(:last-child)::after {
+.taglist>a:not(:last-child)::after {
     content: ', ';
 }
 
-.taglist > a {
+.taglist>a {
     color: var(--body-color);
     font-style: italic;
     text-decoration: none;
@@ -110,11 +110,11 @@ table tr th {
     position: fixed;
 }
 
-#TableOfContents > ul::before {
+#TableOfContents>ul::before {
     content: 'Table Of Contents';
     font-weight: bold;
 }
 
-#TableOfContents > ul > li::before {
+#TableOfContents>ul>li::before {
     padding-left: 20px;
 }
