@@ -98,6 +98,14 @@ table {
     margin: 4% 0 4% 0;
 }
 
+table tr td:last-child {
+    width: 100%
+}
+
+table tr th {
+    white-space: nowrap;
+}
+
 #TableOfContents {
     position: fixed;
 }
