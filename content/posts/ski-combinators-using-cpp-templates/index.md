@@ -1,6 +1,7 @@
 ---
 title: "SKI Combinators In The World Of Templates"
 date: 2023-03-30T20:19:21,513889181+03:00
+description: Describing all of SKI Combinator calculus using C++ templates.
 draft: true
 ---
 

@@ -6,7 +6,7 @@
     <a href="{{.RelPermalink}}" class="article-title">{{.Title}}</a>{{if .Draft}} (Unlisted){{end}}<br>
     <i>{{dateFormat "Mon Jan 2 2006" .Date}}, ~{{.ReadingTime}} min{{if .Draft}}, draft{{end}}</i>
     <br>
-    {{if .Description}}{{.Description}}{{else}}{{.Summary | truncate 10 }}{{end}} <a href="{{.RelPermalink}}">[Read More]</a>
+    {{ .Summary }} <a href="{{.RelPermalink}}">[Read More]</a>
 </li>
 {{end}}
 </ul>

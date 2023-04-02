@@ -3,13 +3,10 @@
     <aside class="sidenote">
         {{ .TableOfContents }}
     </aside>
-    {{if .Description}}
     <div class="abstract">
-        {{.Description}}
+        {{if .Description}}{{.Description}}{{end}}
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
         <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
-        {{if .Draft}}<b><i>Beware: this is a draft! Any line of this might change at any moment!</i></b>{{end}}
     </div>
-    {{end}}
     {{.Content}}
 {{end}}
