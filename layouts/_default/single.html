@@ -1,13 +1,11 @@
 {{define "main"}}
     <h1>{{.Title}}</h1>
-    <aside class="sidenote">
-        {{ .TableOfContents }}
-    </aside>
     <img src="./banner.png" style="width: 100%">
     <div class="abstract">
         {{if .Description}}{{.Description}}{{end}}
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
         <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
     </div>
+    {{ .TableOfContents }}
     {{.Content}}
 {{end}}

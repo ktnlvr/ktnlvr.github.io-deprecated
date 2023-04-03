@@ -106,10 +106,6 @@ table tr th {
     white-space: nowrap;
 }
 
-#TableOfContents {
-    position: fixed;
-}
-
 #TableOfContents>ul::before {
     content: 'Table Of Contents';
     font-weight: bold;
