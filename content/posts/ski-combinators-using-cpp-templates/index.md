@@ -49,7 +49,7 @@ Here we use two different functions. `classical_max` is a usual function, while 
 | K           |  **K**xy → x       | **I**(**K**ab) → **I**b → b     |
 | S           |  **S**xyz → xz(yz) | **SK**fg → **K**g(fg) → g       |
 
-The table above describes how specific combinators operate on their inputs. When computing combinators we  apply the rule of the leftmost combinator step by step. If this combinator is a placeholder, we just look for the next leftmost combinator. If there are no more combinators we stop, the expression is considered "simplified" or "normalized". We may more closely inspect the transformation for the last example, since it is the most complex one.
+The table above describes how specific combinators operate on their inputs. When computing combinators we  apply the rule of the leftmost combinator step by step. If this combinator is a placeholder, we just look for the next leftmost combinator. If there are no more combinators we stop, the expression is considered "simplified" or "normalized". When something is normalized it is in its "head normal form" (SOURCE?). This term is derived from lambda calculus, but I digress. We may more closely inspect the transformation for the last example, since it is the most complex one.
 
 **SK**fg. *Our initial state. The leftmost combinator is **S**. We rewrite our initial state according to rule **S**. In this context, `x` = **K**, `y` = `f`, `z` = `g`. They are rearanged to become* **K**g(fg). *Now we apply rule **K**. In the context of **K**, `x` = `g` and `y` = `(fg)`.* g. *No more rules to apply, simplification done.* **SK**fg → **K**g(fg) → g.
 
@@ -185,23 +185,11 @@ struct J {
 
 ## Boolean Logic
 
-As previously mentioned, SKI Combinators can be used to encode logic, the simplest of all logics is the boolean logic. The **K** combinator is a great starting. The **K** gives us the first of it's arguments, and if we combine **S** and **K** like **SK**, we have a combinator that gives us it's second argument. Wonderful. All of boolean logic can be encoded using *if-then-else* expressions, and the combinators above let us return one combinator or another, based on their own value. We formally define them as follows:
+## Recursion & Loops
 
-| Combinator  | Lambda Calculus |  Rewrite Rule      | SKI Encoded         |
-| ----------- | --------------- |  ----------------- | ------------------- |
-| T           | λx.λy.x         |  **T**xy → x       | `K`                 |
-| F           | λx.λy.y         |  **F**xy → y       | `KS`                |
+We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega, or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself? Yeah, that seems right.
 
-Since we have our *if-then-else* clause we can define more complex structures, like basic logic operations: not, or, and.
-
-Not is the simplest of the bunch, we expect it to return `F` when given `T` and `T` when given `F`. But how can we actually encode behaviour if the combinator rules don't know anything about the combinators they are operating on? Simple, postfix notation. Assuming we are only going to be using the boolean logic combinators for these expressions, we can encode `not` in postfix notation like so: `FT = SKK`.
-
-| Combinator  | Lambda Calculus |  Rewrite Rule      | SKI Encoded         |
-| ----------- | --------------- |  ----------------- | ------------------- |
-| T           | λx.λy.x         |  **T**xy → x       | `K`                 |
-| F           | λx.λy.y         |  **F**xy → y       | `KS`                |
-
-## Recursion, Rule 110
+But there is much more. A *fixed-point* combinator, is such combinator that when applied to itself expands into itself, the **Ω** combinator is an example of that. The extremely powerful fixed point combinator is the **Y** Combinator[^yes-that-y-combinator].
 
 ## Conclusion
 
@@ -209,9 +197,15 @@ Congrats! Your favourite compiled language doubles as a proof assistant!
 
 ## See Also
 
+If you found everything above entertaining, consider learning more using the following links. This all is something I can't specifically cite any of them, but they helped me do my research.
+
+((TODO: Add web.archive.org links to everything))
+
 1. Raymond Smullyan's ["To Mock A Mockingbird"](https://isbnsearch.org/isbn/0192801422). A gentle introduction to combinatory logic, presented as a series of recreational puzzles using bird watching metaphors.
 2. A [wonderful post](https://doisinkidney.com/posts/2020-10-17-ski.html) on SKI Combinators by Donnacha Oisín Kidney.
 3. The Y-Combinator on [Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI&ab_channel=Computerphile) explained by Graham Hutton. 
+4. [Combinatorial Ornithology](https://library.wolfram.com/infocenter/MathSource/4862/).
+5. David C. Keenan's ["To Dissect A Mockingbird"](https://dkeenan.com/Lambda/), a deeper description of lot's an lots of combinators.
 
 [^nlab-lcalc]: [Lambda Calculus](https://ncatlab.org/nlab/show/lambda-calculus) on nLab.
 [^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
@@ -220,3 +214,4 @@ Congrats! Your favourite compiled language doubles as a proof assistant!
 [^barker-iota]: Chrid Barker's "[Iota and Jot: the simplest language?](https://web.archive.org/web/20091116052048/http://semarch.linguistics.fas.nyu.edu/barker/Iota/)" on wayback machine.
 [^turing-tarpit]: [Turing Tarpit](https://esolangs.org/wiki/Turing_tarpit) as defined by https://esolangs.org.
 [^iota-esolang]: [Iota](https://esolangs.org/wiki/Iota), the esoteric programming language on https://esolangs.org.
+[^yes-that-y-combinator]: Yes, if you are wondering whether [Y-Combinator](https://ycombinator.com) the website was named after this, yes. Yes it was.
