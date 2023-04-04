@@ -7,7 +7,7 @@ draft: true
 
 ## Introduction
 
-Combinatory logic is an alternative to lambda calculus[^nlab-lcalc], which does not use variables. In this sence it is akin to tacit (aka point-free, not to be confused with pointless) programming, a paradigm which also avoids using variables. If you are a big stack-oriented language enjoyer you already know what this is about. This idea has seen a recent explosion in popularity, due to functional languages attracting attention. A combinator is a higher-order function (aka can accept other functions as arguments) that uses other combinators and function application to compute itself. The only objects in SKI Calculus are combinators: no numbers, no booleans, no sum or product types, just functions. You would probably be surprised to know that functions are enough to have fun, especially if we assign special meaning to some of them, but I'm getting ahead of myself.
+Combinatory logic[^comblogic-hs] is an alternative to lambda calculus[^nlab-lcalc], which does not use variables. In this sence it is akin to tacit (aka point-free, not to be confused with pointless) programming, a paradigm which also avoids using variables. If you are a big stack-oriented language enjoyer you already know what this is about. This idea has seen a recent explosion in popularity, due to functional languages attracting attention. A combinator is a higher-order function (aka can accept other functions as arguments) that uses other combinators and function application to compute itself. The only objects in SKI Calculus are combinators: no numbers, no booleans, no sum or product types, just functions. You would probably be surprised to know that functions are enough to have fun, especially if we assign special meaning to some of them, but I'm getting ahead of myself.
 
 But what does C++ have to do with any of this? Like someone who did too many extracurricular activities as a child, it is capable, but traumatized. As a result of being pulled in too many directions the language has a set of niche, but powerful features. One of these features is templates, the elder brother of generics. They can be difficult even for experienced programmers, especially when encountering something like dependent types[^dependent-T] or templated template parameters. They are complex enough to be turing complete[^turing-complete-templates]. You know what else is turing complete? SKI Combinators!
 
@@ -55,8 +55,8 @@ The table above describes how specific combinators operate on their inputs. When
 
 This process can go in two different ways: root-first or leaf-first. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italicized letter after the combinator is the applied rule):
 
-* *root-first:* **SKII** *S→* **KI**(**II**) *K→* **I**
-* *leaf-first:* **SKII** *S→* **KI**(**II**) *I→* **KII** *K→* **I**
+* root-first. **SKII** *S→* **KI**(**II**) *K→* **I**
+* leaf-first. **SKII** *S→* **KI**(**II**) *I→* **KII** *K→* **I**
 
 It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above leaf-first took one more step to execute, besides, you are guaranteed to get to the same result anyway. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
 
@@ -160,10 +160,10 @@ But we can reduce calculus even further! Introducing ι (iota or jot), the mothe
 | Combinator  | Jot Expansion                                                              |
 | ----------- | -------------------------------------------------------------------------- |
 | J           | **J**                                                                      |
-| I           | _root-first_ **JJ** → (**JS**)**K** → **SSKK** → **SK**(**KK**) → **I**    |
-| K (*part 1*)| _leaf-first_ **J**(**J**(**JJ**)) → **J**(**JI**) → **J**((**IS**)**K**) → |
+| I           | root-first. **JJ** → (**JS**)**K** → **SSKK** → **SK**(**KK**) → **I**     |
+| K (*part 1*)| leaf-first. **J**(**J**(**JJ**)) → **J**(**JI**) → **J**((**IS**)**K**) →  |
 | K (*part 2*)| → **J**(**SK**) → **SKSK** → **KK**(**SK**) → **K**                        |
-| S           | _root-first_ **J**(**J**(**J**(**JJ**))) → **JK** → **KSK** → **S**        |
+| S           | root-first. **J**(**J**(**J**(**JJ**))) → **JK** → **KSK** → **S**         |
 
 This simplicity made it popular amongst logical minimalists and birthed several Turing tarpit[^turing-tarpit] languages[^iota-esolang]. Let's define that wonderful monstrosity in our C++ code. We are doing templates, haven't you forgot?
 
@@ -180,9 +180,14 @@ struct J {
 
 ## Boolean Logic
 
+Boolean logic can be reconstructed using the SKI Combinators. These logic systems are interchangeable, you can easily translate one into another, but only if we stretch the definition of easy. We can safely have half-applied combinators, so let **T** and **F**, true and false respectively, be combinators too! But what arguments can they accept? All of logic can be expressed using if-then-else statements, so we can express a branch statement as either the **T** or the **F** combinator! Let **T**xy → x, **F**xy → y. Now, that we have a conditional we can devise negation, the second simplest logical operation (the first simplest one is a tautology, **I** is not that difficult to devise). If we keep using single letters to define combinators we will run out very soon, we already would have a collision of **I** the identity and **I** the implication, so we will denote logical operations with words, in this case the word is ***not***.
+
+
+Let's express it directly through an if-else statement, where x is our input:&nbsp;***not***&nbsp;x&nbsp;→&nbsp;x**FT**. This is wonderful and we could just leave it like that, but this form is not SKI. What can be useful here is the undermentioned **V** combinator, from Raymond Smullyan's[^mock] book. This combinator is defined **V**xyz → zyx, which is of great use to us, since **VTF**x *V→* x**FT**, which is our definition for not.
+
 ## Recursion & Loops
 
-We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega, or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself. Funky.
+We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx, or in terms of SKI: **ω**x → **SII**x. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself. Funky. 
 
 ```cpp
 // Since they get stuck in an infinite loop we
@@ -204,23 +209,25 @@ But there is much more. A *fixed-point* combinator, is such combinator that when
 
 Congrats! Your favourite compiled language doubles as a proof assistant!
 
-## See Also
+## See Also & Acknowledgement
 
-If you found everything above entertaining, consider learning more using the following links. This all is something I can't specifically cite any of them, but they helped me do my research.
+If you found everything above entertaining, consider learning more using the following links, organized in no particular order. This all is something I can't specifically cite any of them, but they helped me do my research.
 
 ((TODO: Add web.archive.org links to everything))
 
-1. Raymond Smullyan's ["To Mock A Mockingbird"](https://isbnsearch.org/isbn/0192801422). A gentle introduction to combinatory logic, presented as a series of recreational puzzles using bird watching metaphors.
 2. A [wonderful post](https://doisinkidney.com/posts/2020-10-17-ski.html) on SKI Combinators by Donnacha Oisín Kidney.
 3. The Y-Combinator on [Computerphile](https://www.youtube.com/watch?v=9T8A89jgeTI&ab_channel=Computerphile) explained by Graham Hutton. 
 4. [Combinatorial Ornithology](https://library.wolfram.com/infocenter/MathSource/4862/).
-5. David C. Keenan's ["To Dissect A Mockingbird"](https://dkeenan.com/Lambda/), a deeper description of lot's an lots of combinators.
+5. David C. Keenan's ["To Dissect A Mockingbird"](https://dkeenan.com/Lambda/), a deeper description of lots and lots of combinators.
+6. "New arithmetical operators in the theory of combinators" by W.L. van der Poel, C.E. Schaap and G. van der Mey.
 
+[^comblogic-hs]: [Combinatory Logic](https://wiki.haskell.org/Combinatory_logic) on haskell.org.
 [^nlab-lcalc]: [Lambda Calculus](https://ncatlab.org/nlab/show/lambda-calculus) on nLab.
 [^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
 [^turing-complete-templates]: Oh yes, the templates really are turing complete, [even cppref admits it](https://en.cppreference.com/w/cpp/language/template_metaprogramming).
 [^arity]: Arity is just how many arguments the function expects. You already heard in words like "bin**ary**" and "un**ary**". [Arity](https://ncatlab.org/nlab/show/arity) on nLab (abstraction warning).
 [^barker-iota]: Chrid Barker's "[Iota and Jot: the simplest language?](https://web.archive.org/web/20091116052048/http://semarch.linguistics.fas.nyu.edu/barker/Iota/)" on wayback machine.
-[^turing-tarpit]: [Turing Tarpit](https://esolangs.org/wiki/Turing_tarpit) as defined by https://esolangs.org.
-[^iota-esolang]: [Iota](https://esolangs.org/wiki/Iota), the esoteric programming language on https://esolangs.org.
+[^turing-tarpit]: [Turing Tarpit](https://esolangs.org/wiki/Turing_tarpit) as defined by esolangs.org.
+[^iota-esolang]: [Iota](https://esolangs.org/wiki/Iota), the esoteric programming language on esolangs.org.
 [^yes-that-y-combinator]: Yes, if you are wondering whether [Y-Combinator](https://ycombinator.com) the website was named after this, yes. Yes it was.
+[^mock]: Raymond Smullyan's ["To Mock A Mockingbird"](https://isbnsearch.org/isbn/0192801422). A gentle introduction to combinatory logic, presented as a series of recreational puzzles using bird watching metaphors.
