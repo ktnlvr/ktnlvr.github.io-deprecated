@@ -53,17 +53,12 @@ The table above describes how specific combinators operate on their inputs. When
 
 **SK**fg. *Our initial state. The leftmost combinator is **S**. We rewrite our initial state according to rule **S**. In this context, `x` = **K**, `y` = `f`, `z` = `g`. They are rearanged to become* **K**g(fg). *Now we apply rule **K**. In the context of **K**, `x` = `g` and `y` = `(fg)`.* g. *No more rules to apply, simplification done.* **SK**fg → **K**g(fg) → g.
 
-This process can go in two different ways: root-first or leaf-first. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italic text after the combinator is the applied rule):
+This process can go in two different ways: root-first or leaf-first. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italicized letter after the combinator is the applied rule):
 
-| Root-First     | Leaf-First   |
-| -------------- | -----------  |
-| **SKII**  *init*              |
-| **KI**(**II**) *S*            |
-| **I** *K*      | **KII** *I*  |
-| **I**          | **I** *K*    |
-| **I** *done*                  |
+* *root-first:* **SKII** *S→* **KI**(**II**) *K→* **I**
+* *leaf-first:* **SKII** *S→* **KI**(**II**) *I→* **KII** *K→* **I**
 
-It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above leaf-first took one more step to execute. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
+It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above leaf-first took one more step to execute, besides, you are guaranteed to get to the same result anyway. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
 
 ## Abuse Of Type Inference
 
