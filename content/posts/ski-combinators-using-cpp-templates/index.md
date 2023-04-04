@@ -187,7 +187,21 @@ struct J {
 
 ## Recursion & Loops
 
-We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega, or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself? Yeah, that seems right.
+We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega, or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself. Funky.
+
+```cpp
+// Since they get stuck in an infinite loop we
+// can't even define them in a file without getting a compilation error
+#ifdef 0
+
+struct ω {
+  template <typename X> using apply = typename X::apply<X>;
+};
+
+using Ω = ω::apply<ω>;
+
+#endif
+```
 
 But there is much more. A *fixed-point* combinator, is such combinator that when applied to itself expands into itself, the **Ω** combinator is an example of that. The extremely powerful fixed point combinator is the **Y** Combinator[^yes-that-y-combinator].
 
