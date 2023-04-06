@@ -42,7 +42,6 @@ curried_max(1)(2)    // 2
 Here we use two different functions. `classical_max` is a usual function, while `curried_max` is curried. That might seem like a more complicated to call the function, however, this partially applied state will allow us to generate new combinators. 
 
 
-
 | Combinator  |  Rewrite Rule      | Example                         |
 | ----------- |  ----------------- | ------------------------------- |
 | I           |  **I**x → x        | (**I**u)v → uv                  |
@@ -53,12 +52,12 @@ The table above describes how specific combinators operate on their inputs. When
 
 **SK**fg. *Our initial state. The leftmost combinator is **S**. We rewrite our initial state according to rule **S**. In this context, `x` = **K**, `y` = `f`, `z` = `g`. They are rearanged to become* **K**g(fg). *Now we apply rule **K**. In the context of **K**, `x` = `g` and `y` = `(fg)`.* g. *No more rules to apply, simplification done.* **SK**fg → **K**g(fg) → g.
 
-This process can go in two different ways: root-first or leaf-first. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italicized letter after the combinator is the applied rule):
+This process can go in two different ways: lazy or eager. The first approach (as already described) is evaluating the leftmost combinator, while the second one prioritizes the deepest combinator (the combinator most deeply nested in the parentheses). The result will be the same, but the intermediate steps vary. See the difference for yourself below (italicized letter after the combinator is the applied rule):
 
-* root-first. **SKII** *S→* **KI**(**II**) *K→* **I**
-* leaf-first. **SKII** *S→* **KI**(**II**) *I→* **KII** *K→* **I**
+* lazy. **SKII** *S→* **KI**(**II**) *K→* **I**
+* eager. **SKII** *S→* **KI**(**II**) *I→* **KII** *K→* **I**
 
-It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above leaf-first took one more step to execute, besides, you are guaranteed to get to the same result anyway. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
+It rarely makes sense to first evaluate the deepest expression first (but it will down the line), like in the example above eager took one more step to execute, besides, you are guaranteed to get to the same result anyway. Feel free to look over it several times and try doing it by yourself. If you want to validate your understanding try simplifying `S(K(SI))K` or `SK(KK)`; we will return to those specific combinators in the next section.
 
 ## Abuse Of Type Inference
 
@@ -151,39 +150,44 @@ using I = S::apply<K>::apply<K::apply<K>>;
 using result = I::apply<a>;
 ```
 
-## One J To Rule Them All
-
-If you read this far, congratulations. You probably understand more about combinators than 99.9% of the earth's population. A rather niche skill, ey? As we already saw, complex result can emerge from rather simple (albeit seemingly random) behaviour. As mentioned in the introduction, SKI calculus is the simplest calculus there is, since all other calculi can be expressed using it. That was a lie. The thing is, we can express the **I** combinator in terms of **S** & **K**, it would look something like **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (it is actually called that sometimes).
-
-But we can reduce calculus even further! Introducing ι (iota or jot), the mother of j, so let **J** be the letter to denote it. First discovered by Chris Barker[^barker-iota], if we define **J**x → x**SK**, we can reconstruct all the other combinators through it. Based on it's arguments **J** can compute into combinators of different arity, depending on "x". That makes it very special, since it's the only combinator we've seen so far with variable arity, but we will see more of that in the future. The table below shows how exactly all the combinators can be reconstructed. 
-
-| Combinator  | Jot Expansion                                                              |
-| ----------- | -------------------------------------------------------------------------- |
-| J           | **J**                                                                      |
-| I           | root-first. **JJ** → (**JS**)**K** → **SSKK** → **SK**(**KK**) → **I**     |
-| K (*part 1*)| leaf-first. **J**(**J**(**JJ**)) → **J**(**JI**) → **J**((**IS**)**K**) →  |
-| K (*part 2*)| → **J**(**SK**) → **SKSK** → **KK**(**SK**) → **K**                        |
-| S           | root-first. **J**(**J**(**J**(**JJ**))) → **JK** → **KSK** → **S**         |
-
-This simplicity made it popular amongst logical minimalists and birthed several Turing tarpit[^turing-tarpit] languages[^iota-esolang]. Let's define that wonderful monstrosity in our C++ code. We are doing templates, haven't you forgot?
-
-```cpp
-struct J {
-  template <typename X> 
-  using apply = typename X::apply<S>::apply<K>;
-};
-```
-
-## String Parsing
+Here the **R** combinator will swap it's arguments, going from "ab" to "ba". In the second case it's called **I** for a reason. The thing is, we can express the **I** combinator in terms of **S** & **K**, it is precisely **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (which it is, sometimes). When the head normal form of one combinator is equal to head normal form of another, we say they are "extensionally equal". There always is an infinite amount of SK combinator sequences that are extensionally equal to some other program, since for any sequence *a* we can transform it into **SKK***a*, which we can later transform into **SKK**(**SKK***a*) and so on forever.
 
 ## Any Input To Any Output
+
+Well, we have managed to transform some expressions around, which was surely fun, but there must be a way of converting any set of inputs to any set of outputs? Such way there is, in the book "The Implementation of Functional Programming Languages"[^impl-of-fn-lang] section 16.1 the author talks about one possible way of transforming lambda calculus, but we will try and avoid another layer of complexity. We will introduce a concept of the anonymous combinator, it's just a combinator without a name, for instance (*xy* → *xy*) is an anonymous combinator extensionally equal to **I**. They work as ordinary combinators, except they don't have a name. They also can have multiple arguments with currying, so (*xy* → *x*) is extensionally equal to (*x* → (*y* → *x*)).
+
+If we invert the definitions for all our combinators we can deduce several rule on how an anonymous combinator can be transformed into an SKI Sequence. By inversing the definitions of all known combinators we get can transformations 'S, 'K and 'I which inverse the effects of their respective combinators. We will also write out currying as a possible transformation. They work as follows:
+
+* (*x* → *x1 x2*) S⇒ **S** (*x* → *x1*) (*x* → *x2*)
+* (*c* → (*x* → *c*)) K⇒ **K***cx*
+* (*x* → *x*) I⇒ **I**x
+
+These rules are enough to transform any anonymous combinator into terms of SKI! Note the double arrow, it marks a reverse rewrite. A reverse arrow would be more appropriate, but it find it a bit confusing. Let's follow an example, say we want to express some **ω***x* → *xx*:
+
+1. (*x* → *xx*)
+2. S⇒ **S** (*x* → *x*) (*x* → *x*)
+3. I⇒ **SII**
+
+Wonderful! The transformation was successful, which we can verify for outselves. What about a more complex example, say **R***xy* → *yx*:
+
+1. (*xy* → *yx*)
+2. (*x* → (*y* → *yx*))
+3. S⇒ (*x* → **S** (*y* → *y*) (*y* → *x*))
+4. I⇒ (*x* → **SI** (*y* → *x*))
+5. S⇒ **S** (*x* → **SI**) (*x* → *y* → *x*)
+6. K⇒ **S**(**K**(**SI**))**K**
+
+**S**(**K**(**SI**))**K***ab* → *ba*. Notice, how we can not apply K reduction on the last term on step 3. In that innermost anonymous combinator the resulting *x* depends on an *x*, that was supplied as the argument, which we have to preserve. If that *x* was some constant we could safely rewrite it in terms of **K**.
+
+We also discovered that **I** can be discovered using **SK**, so let's apply the algorithm to find it again.
+
+TODO: DO THE THING
 
 ## Boolean Logic
 
 Boolean logic can be reconstructed using the SKI Combinators. These logic systems are interchangeable, you can easily translate one into another, but only if we stretch the definition of easy. We can safely have half-applied combinators, so let **T** and **F**, true and false respectively, be combinators too! But what arguments can they accept? All of logic can be expressed using if-then-else statements, so we can express a branch statement as either the **T** or the **F** combinator! Let **T**xy → x, **F**xy → y. Now, that we have a conditional we can devise negation, the second simplest logical operation (the first simplest one is a tautology, **I** is not that difficult to devise). If we keep using single letters to define combinators we will run out very soon, we already would have a collision of **I** the identity and **I** the implication, so we will denote logical operations with words, in this case the word is ***not***.
 
-
-Let's express it directly through an if-else statement, where x is our input:&nbsp;***not***&nbsp;x&nbsp;→&nbsp;x**FT**. This is wonderful and we could just leave it like that, but this form is not SKI. What can be useful here is the undermentioned **V** combinator, from Raymond Smullyan's[^mock] book. This combinator is defined **V**xyz → zyx, which is of great use to us, since **VTF**x *V→* x**FT**, which is our definition for not.
+Let's express it directly through an if-else statement, where x is our input:&nbsp;***not***&nbsp;x&nbsp;→&nbsp;x**FT**. This is wonderful and we could just leave it like that, but this form is not SKI. What can be useful here is the undermentioned **V** combinator, from Raymond Smullyan's[^mock] book. This combinator is defined **V**xyz → zyx, which is of great use to us, since **VTF**x *V→* x**FT**, which is our definition for ***not***.
 
 ## Recursion & Loops
 
@@ -205,11 +209,36 @@ using Ω = ω::apply<ω>;
 
 But there is much more. A *fixed-point* combinator, is such combinator that when applied to itself expands into itself, the **Ω** combinator is an example of that. The extremely powerful fixed point combinator is the **Y** Combinator[^yes-that-y-combinator].
 
+TODO: SOLVE FOR RECURSIVE FUNCTIONS
+
+## One J To Rule Them All
+
+If you read this far, congratulations. You probably understand more about combinators than 99.9% of the earth's population. A rather niche skill, ey? As we already saw, complex result can emerge from rather simple (albeit seemingly random) behaviour. As mentioned in the introduction, SKI calculus is the simplest calculus there is, since all other calculi can be expressed using it. We can reduce calculus even further! Introducing ι (iota or jot), the mother of j, so let **J** be the letter to denote it. First discovered by Chris Barker[^barker-iota], if we define **J**x → x**SK**, we can reconstruct all the other combinators through it. Based on it's arguments **J** can compute into combinators of different arity, depending on "x". That makes it very special, since it's the only combinator we've seen so far with variable arity, but we will see more of that in the future. The table below shows how exactly all the combinators can be reconstructed. 
+
+| Combinator  | Jot Expansion                                                              |
+| ----------- | -------------------------------------------------------------------------- |
+| J           | **J**                                                                      |
+| I           | lazy. **JJ** → (**JS**)**K** → **SSKK** → **SK**(**KK**) → **I**           |
+| K (*part 1*)| eager. **J**(**J**(**JJ**)) → **J**(**JI**) → **J**((**IS**)**K**) →       |
+| K (*part 2*)| → **J**(**SK**) → **SKSK** → **KK**(**SK**) → **K**                        |
+| S           | lazy. **J**(**J**(**J**(**JJ**))) → **JK** → **KSK** → **S**               |
+
+This simplicity made it popular amongst logical minimalists and birthed several Turing tarpit[^turing-tarpit] languages[^iota-esolang]. Let's define that wonderful monstrosity in our C++ code. We are doing templates, haven't you forgot?
+
+```cpp
+struct J {
+  template <typename X> 
+  using apply = typename X::apply<S>::apply<K>;
+};
+```
+
 ## Conclusion
 
 Congrats! Your favourite compiled language doubles as a proof assistant!
 
-## See Also & Acknowledgement
+## Acknowledgement
+
+Great thanks to [Giorgio Grigolo](https://grigolo.mt/) and [Dr Alexander Farrugia](https://www.um.edu.mt/profile/alexfarrugia) at [The University of Malta](um.edu.mt) for helping me with some bits of research and finding some sources. Also huge thanks to all of my friends how bothered to proofread this post many more than several times.
 
 If you found everything above entertaining, consider learning more using the following links, organized in no particular order. This all is something I can't specifically cite any of them, but they helped me do my research.
 
@@ -221,6 +250,7 @@ If you found everything above entertaining, consider learning more using the fol
 5. David C. Keenan's ["To Dissect A Mockingbird"](https://dkeenan.com/Lambda/), a deeper description of lots and lots of combinators.
 6. "New arithmetical operators in the theory of combinators" by W.L. van der Poel, C.E. Schaap and G. van der Mey.
 
+[^impl-of-fn-lang]:  Simon L. Peyton Jones ["The Implementation of Functional Programming Languages"](https://isbnsearch.org/isbn/0134533259)
 [^comblogic-hs]: [Combinatory Logic](https://wiki.haskell.org/Combinatory_logic) on haskell.org.
 [^nlab-lcalc]: [Lambda Calculus](https://ncatlab.org/nlab/show/lambda-calculus) on nLab.
 [^dependent-T]:[Cppreference](https://en.cppreference.com/w/cpp/language/dependent_name) on dependent types. [Dependent Types](https://ncatlab.org/nlab/show/dependent+type+theory) on nLab.
