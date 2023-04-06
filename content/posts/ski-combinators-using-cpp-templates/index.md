@@ -152,23 +152,22 @@ using result = I::apply<a>;
 
 Here the **R** combinator will swap it's arguments, going from "ab" to "ba". In the second case it's called **I** for a reason. The thing is, we can express the **I** combinator in terms of **S** & **K**, it is precisely **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (which it is, sometimes). When the head normal form of one combinator is equal to head normal form of another, we say they are "extensionally equal". There always is an infinite amount of SK combinator sequences that are extensionally equal to some other program, since for any sequence *a* we can transform it into **SKK***a*, which we can later transform into **SKK**(**SKK***a*) and so on forever.
 
-## Any Input To Any Output
+## Solving For Combinators
 
-Well, we have managed to transform some expressions around, which was surely fun, but there must be a way of converting any set of inputs to any set of outputs? Such way there is, in the book "The Implementation of Functional Programming Languages"[^impl-of-fn-lang] section 16.1 the author talks about one possible way of transforming lambda calculus, but we will try and avoid another layer of complexity. We will introduce a concept of the anonymous combinator, it's just a combinator without a name, for instance (*xy* → *xy*) is an anonymous combinator extensionally equal to **I**. They work as ordinary combinators, except they don't have a name. They also can have multiple arguments with currying, so (*xy* → *x*) is extensionally equal to (*x* → (*y* → *x*)).
+Well, we have managed to transform some expressions around, that was surely fun, but there must be a way of converting any set of inputs to any set of outputs? Such way there is, in the book "The Implementation of Functional Programming Languages"[^impl-of-fn-lang] section 16.1 the author talks about one possible way of transforming lambda calculus into SKI calculus, to avoid another layer of complexity imagine an the anonymous combinator, it's just a combinator without a name. For instance (*xy* → *xy*) is an anonymous combinator extensionally equal to **I**. They work as ordinary combinators, except they don't have a name to call them by, mostly due to the fact the we wouldn't need that name anywhere in our derivation. After all, we don't want our combinators to depend on how they are called too. As it is with ordinaray combinators, then can accept multiple arguments through currying, so (*xy* → *x*) is extensionally equal to (*x* → (*y* → *x*)).
 
-If we invert the definitions for all our combinators we can deduce several rule on how an anonymous combinator can be transformed into an SKI Sequence. By inversing the definitions of all known combinators we get can transformations 'S, 'K and 'I which inverse the effects of their respective combinators. We will also write out currying as a possible transformation. They work as follows:
+If we invert the definitions for all our combinators we can deduce several rule on how an anonymous combinator can be transformed into an SKI Sequence. By inversing the definitions of all known combinators we get can transformations. They work as follows:
 
 * (*x* → *x1 x2*) S⇒ **S** (*x* → *x1*) (*x* → *x2*)
 * (*c* → (*x* → *c*)) K⇒ **K***cx*
 * (*x* → *x*) I⇒ **I**x
-
-These rules are enough to transform any anonymous combinator into terms of SKI! Note the double arrow, it marks a reverse rewrite. A reverse arrow would be more appropriate, but it find it a bit confusing. Let's follow an example, say we want to express some **ω***x* → *xx*:
+Note the double arrow, it marks a reverse rewrite. A reverse arrow would be more appropriate, but it find it a bit confusing. These rules are enough to transform any anonymous combinator into terms of SKI! Let's follow an example, say we want to express some **ω***x* → *xx*:
 
 1. (*x* → *xx*)
 2. S⇒ **S** (*x* → *x*) (*x* → *x*)
 3. I⇒ **SII**
 
-Wonderful! The transformation was successful, which we can verify for outselves. What about a more complex example, say **R***xy* → *yx*:
+Wonderful! Working backwards allowed us to display The transformation was successful, which we can verify for outselves. What about a more complex example, say **R***xy* → *yx*:
 
 1. (*xy* → *yx*)
 2. (*x* → (*y* → *yx*))
