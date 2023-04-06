@@ -161,6 +161,7 @@ If we invert the definitions for all our combinators we can deduce several rule 
 * (*x* → *x1 x2*) S⇒ **S** (*x* → *x1*) (*x* → *x2*)
 * (*c* → (*x* → *c*)) K⇒ **K***cx*
 * (*x* → *x*) I⇒ **I**x
+
 Note the double arrow, it marks a reverse rewrite. A reverse arrow would be more appropriate, but it find it a bit confusing. These rules are enough to transform any anonymous combinator into terms of SKI! Let's follow an example, say we want to express some **ω***x* → *xx*:
 
 1. (*x* → *xx*)
