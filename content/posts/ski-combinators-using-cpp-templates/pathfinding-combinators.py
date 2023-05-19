@@ -32,38 +32,32 @@ def simplify(input: list[str | list]) -> list[str | list] | str:
             return simplify([x] + rest)
         case ["S", x, y, z, *rest]:
             return simplify([x, z, simplify([y, z])] + rest)
+        case [thing, [next], *rest]:
+            return simplify([thing, next] + rest)
         case [[*contents], *rest]:
             return simplify(contents + rest)
+        case []:
+            return []
         case _:
             return input
 
 
-def bfs(input: list[list | str], start: list[str], target: list[list | str]):
-    simple_target = simplify(target)
-    def mutate(combinator: str):
-        transformed = []
-        for i in range(len(input) + 1):
-            cp = deepcopy(input)
-            if i < len(input) and cp[i] == combinator:
-                continue
-            cp.insert(i, combinator)
-            transformed.append(cp)
-            try:
-                if simplify(cp + start) == simple_target:
-                    print('!!!!', cp)
-                    exit(-1)
-            except RecursionError:
-                continue
-        for i, item in enumerate(input):
-            if type(item) is list:
-                for trans in bfs(item, target=target):
-                    transformed.append(
-                        input[:i] + [trans] + input[i + 1 :]
-                    )
-        return transformed
+def deepest_list(input: list[list | str]):
+    for item in input:
+        if type(item) == list:
+            return deepest_list(item)
+    else:
+        return input
 
-    all = mutate("S") + mutate("K") 
-    return all
+
+def transform(input: list[list | str], output: list[list | str]):
+    while not simplify(input) == simplify(output):
+        
+    return input
+
+def parenthesise(input: list[list | str]):
+    out = [input[0]] + [parenthesise(x) for x in input[1:]]
+    return out
 
 
 def stringify(input: list, toplevel=False) -> str:
@@ -79,11 +73,27 @@ def stringify(input: list, toplevel=False) -> str:
 
 parsed = parse_ski(expr)
 
-inputs = [parsed]
-for i in range(9):
-    for input in inputs[::]:
-        new_inputs = []
-        for x in bfs(input, ['a', 'b'], ['b', 'a']):
-            print(u := x)
-            new_inputs.append(u)
-        inputs = new_inputs
+vars = "xyz"
+
+if __name__ == "__main__":
+    print("Running in REPL mode")
+    while True:
+        try:
+            data = input("> ").strip()
+
+            if data.startswith("?"):
+                expr = parse_ski(data[1:])
+                target = input("? ").strip()
+                target = simplify(parse_ski(target))
+                print(
+                    f"Reducing {parenthesise(expr)} to {parenthesise(target)}"
+                )
+                print(transform(parenthesise(expr), parenthesise(target)))
+
+            else:
+                print(
+                    stringify(simplify(parse_ski(data)), toplevel=True)
+                )
+        except RecursionError:
+            print("Recursion too deep")
+            exit(-1)

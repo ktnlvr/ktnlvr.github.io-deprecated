@@ -150,36 +150,43 @@ using I = S::apply<K>::apply<K::apply<K>>;
 using result = I::apply<a>;
 ```
 
-Here the **R** combinator will swap it's arguments, going from "ab" to "ba". In the second case it's called **I** for a reason. The thing is, we can express the **I** combinator in terms of **S** & **K**, it is precisely **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (which it is, sometimes). When the head normal form of one combinator is equal to head normal form of another, we say they are "extensionally equal". There always is an infinite amount of SK combinator sequences that are extensionally equal to some other program, since for any sequence *a* we can transform it into **SKK***a*, which we can later transform into **SKK**(**SKK***a*) and so on forever.
+Here the **R** combinator will swap it's arguments, going from "ab" to "ba". In the second case it's called **I** for a reason. The thing is, we can express the **I** combinator in terms of **S** & **K**, it is precisely **SKK** or **SKS** or even **SK**a, where "a" is any combinator. Functionally **I** is but syntactic sugar, so the system might as well be called SK Calculus (which it is, sometimes). When the head normal form of one combinator is equal to head normal form of another, we say they are "extensionally equal". There always is an infinite amount of **SKK** combinator sequences that are extensionally equal to some other program, since for any sequence *a* we can transform it into **SKK***a*, which we can later transform into **SKK**(**SKK***a*) and so on forever.
 
 ## Solving For Combinators
 
-Well, we have managed to transform some expressions around, that was surely fun, but there must be a way of converting any set of inputs to any set of outputs? Such way there is, in the book "The Implementation of Functional Programming Languages"[^impl-of-fn-lang] section 16.1 the author talks about one possible way of transforming lambda calculus into SKI calculus, to avoid another layer of complexity imagine an the anonymous combinator, it's just a combinator without a name. For instance (*xy* → *xy*) is an anonymous combinator extensionally equal to **I**. They work as ordinary combinators, except they don't have a name to call them by, mostly due to the fact the we wouldn't need that name anywhere in our derivation. After all, we don't want our combinators to depend on how they are called too. As it is with ordinaray combinators, then can accept multiple arguments through currying, so (*xy* → *x*) is extensionally equal to (*x* → (*y* → *x*)).
+Well, we have managed to transform some expressions around, that was surely fun, but there must be a way of converting any set of inputs to any set of outputs? Such way there is, in the book "The Implementation of Functional Programming Languages"[^impl-of-fn-lang] section 16.1 the author talks about one possible way of transforming lambda calculus into SKI calculus. Vo avoid another layer of complexity imagine an the anonymous combinator, just a combinator without a name. For instance (*xy* → *xy*) is an anonymous combinator (extensionally equal to **I**). They work as ordinary combinators, except they don't have a name to call them by, mostly due to the fact that we wouldn't need that name anywhere in our derivation. After all, we don't want our combinators to depend on how they are called. As it is with ordinaray combinators, then can accept multiple arguments through currying, so (*xy* → *x*) is extensionally equal to (*x* → (*y* → *x*)).
 
-If we invert the definitions for all our combinators we can deduce several rule on how an anonymous combinator can be transformed into an SKI Sequence. By inversing the definitions of all known combinators we get can transformations. They work as follows:
+If we invert the definitions for all our combinators we can deduce several rule on how an anonymous combinator can be transformed into an SKI Sequence. By inversing the definitions of all known combinators we get can transformations. They work as follows. Note the double arrow, it marks the reverse rewrite, essentially expressing some expression in terms of SKI. A reverse arrow would be more appropriate, but I find it a bit confusing:
 
 * (*x* → *x1 x2*) S⇒ **S** (*x* → *x1*) (*x* → *x2*)
 * (*c* → (*x* → *c*)) K⇒ **K***cx*
 * (*x* → *x*) I⇒ **I**x
 
-Note the double arrow, it marks a reverse rewrite. A reverse arrow would be more appropriate, but it find it a bit confusing. These rules are enough to transform any anonymous combinator into terms of SKI! Let's follow an example, say we want to express some **ω***x* → *xx*:
+These rules are enough to transform any anonymous combinator into terms of SKI, so I will keep calling them transformation. So, a transformation means rewriting some definition in terms of **S**, **K** or **I**. Let's follow an example, say we want to express some **ω***x* → *xx*:
 
 1. (*x* → *xx*)
 2. S⇒ **S** (*x* → *x*) (*x* → *x*)
 3. I⇒ **SII**
 
-Wonderful! Working backwards allowed us to display The transformation was successful, which we can verify for outselves. What about a more complex example, say **R***xy* → *yx*:
+Wonderful! There is, however, one trick to expressing combinators with, say, three different arguments in the output: we can still use the **S** rule, just keep in mind that any expression (*x* → *e1 e2 e3*) can be also written (*x* → *(e1 e2) e3*) due to left-associativity of combinator application, as discussed at the start. In this case the **S** rule would apply like:
+1. (*x* → *(e1 e2) e3*)
+2. S⇒ **S** (*x* → *e1 e2*)
+3. S⇒ **S** (**S** (*x* → *e1*) (*x* → *e2*)) (*x* → *e3*)
+
+This rule plays an important role in when rewriting something like **R***xy* → *yx*:
 
 1. (*xy* → *yx*)
 2. (*x* → (*y* → *yx*))
 3. S⇒ (*x* → **S** (*y* → *y*) (*y* → *x*))
-4. I⇒ (*x* → **SI** (*y* → *x*))
-5. S⇒ **S** (*x* → **SI**) (*x* → *y* → *x*)
+4. I⇒ (*x* → **SI** (*y* → *x*)) 
+5. S⇒ **S** (*x* → **SI**) (*x* → (*y* → *x*))
 6. K⇒ **S**(**K**(**SI**))**K**
 
-**S**(**K**(**SI**))**K***ab* → *ba*. Notice, how we can not apply K reduction on the last term on step 3. In that innermost anonymous combinator the resulting *x* depends on an *x*, that was supplied as the argument, which we have to preserve. If that *x* was some constant we could safely rewrite it in terms of **K**.
+**S**(**K**(**SI**))**K***ab* → *ba*.
 
-We also discovered that **I** can be discovered using **SK**, so let's apply the algorithm to find it again.
+At step 4 we have an expression of form **SI**(*y* → *x*), so we treat **SI** as *(e1 e2)* and (*y* → *x*) as *e3*, which allows us to apply another transformation.  Notice, how we can not apply **K** transformation on the last term on step 3. In that innermost anonymous combinator the resulting *x* depends on an *x*, that was supplied as the argument, which we have to preserve. The resulting expression usually doesn't require any simplification.
+
+We also found out that **I** can be expressed using **SK**, so let's apply the algorithm to discover it again.
 
 TODO: DO THE THING
 
@@ -191,7 +198,7 @@ Let's express it directly through an if-else statement, where x is our input:&nb
 
 ## Recursion & Loops
 
-We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx, or in terms of SKI: **ω**x → **SII**x. All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself. Funky. 
+We already mentioned that SKI Combinators are turing complete, so why not do something that requires turing completeness? What can be more turing than a machine that halts! Behold the **ω** (*little* omega, size matters) combinator: **ω**x → xx, or in terms of SKI: **ω**x → **SII**x (sometimes also called **M**[^mock]). All it does is applies the argument to itself, apply it twice and you have an infinite recursion: **ωω** → **ωω**, magical. This is the **Ω** (*large* omega or just omega) combinator and it doesn't care for its arguments at all. This combinator doesn't have a "normalized" or a "head-normal" form, since it will be always be stuck being itself.
 
 ```cpp
 // Since they get stuck in an infinite loop we
@@ -210,6 +217,8 @@ using Ω = ω::apply<ω>;
 But there is much more. A *fixed-point* combinator, is such combinator that when applied to itself expands into itself, the **Ω** combinator is an example of that. The extremely powerful fixed point combinator is the **Y** Combinator[^yes-that-y-combinator].
 
 TODO: SOLVE FOR RECURSIVE FUNCTIONS
+
+At this stage picking either eager or lazy evaluation is an important choice, or rather a non-choice at all. 
 
 ## One J To Rule Them All
 
