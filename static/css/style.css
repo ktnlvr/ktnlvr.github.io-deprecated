@@ -1,17 +1,7 @@
-footer {
-    padding-top: 15%;
-    font-size: 16px;
-}
-
-.overlay {
-    z-index: 100;
-    position: fixed;
-    width: 100%;
-    left: 0px;
-    height: 30vh;
-    transform: translate(0, 70vh);
-    pointer-events: none;
-    background: linear-gradient(0deg, var(--body-bg-color) 0%, rgba(255, 255, 255, 0) 100%);
+body {
+    margin-right: 10%;
+    margin-left: 10%;
+    font-size: 2rem;
 }
 
 .list-of-posts {
@@ -36,11 +26,6 @@ footer {
     opacity: 67%;
 }
 
-a.article-title {
-    font-size: 125%;
-    color: var(--body-color);
-}
-
 #breadcrumbs {
     list-style: none;
     padding: 0px;
@@ -55,43 +40,12 @@ a.article-title {
     color: var(--body-color);
 }
 
-html {
-    font-size: 1.25rem;
-    visibility: visible;
-    opacity: 1;
-}
-
-.footnotes {
-    padding-top: 40px;
-    border-top: 0;
-}
-
-
 sup::before {
     content: '['
 }
 
 sup::after {
     content: ']'
-}
-
-nav li::before {
-    content: "";
-    padding-right: 0;
-}
-
-.taglist {
-    font-size: 16px;
-}
-
-.taglist>a:not(:last-child)::after {
-    content: ', ';
-}
-
-.taglist>a {
-    color: var(--body-color);
-    font-style: italic;
-    text-decoration: none;
 }
 
 table {
@@ -104,6 +58,23 @@ table tr td:last-child {
 
 table tr th {
     white-space: nowrap;
+}
+
+.abstract {
+    margin: 12pt 24pt 12pt 24pt;
+}
+
+footer {
+    margin-top: 5%;
+    opacity: 50%;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-indent: 2rem;
 }
 
 #TableOfContents>ul::before {

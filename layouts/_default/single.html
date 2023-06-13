@@ -3,7 +3,7 @@
     <div class="abstract">
         {{if .Description}}{{.Description}}{{end}}
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
-        <p class="author">Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
+        <p class="author"><i>Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</i></p>
     </div>
     {{ .TableOfContents }}
     {{.Content}}
