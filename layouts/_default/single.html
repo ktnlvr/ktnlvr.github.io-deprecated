@@ -1,16 +1,18 @@
 {{define "main"}}
     <h1>{{.Title}}</h1>
-    <div class="abstract">
-        {{if .Description}}{{.Description}}{{end}}
+    <div style="display: grid; grid-template-columns: 33% 66%; margin-bottom: 48pt; white-space: nowrap;">
+        <div><i>By Artur Roos<br>
+        {{if .Params.Difficulty}}{{.Params.Difficulty}} Difficulty<br>
+        {{end}}
+        {{.WordCount}} words<br>
+        ~{{.ReadingTime}} minutes reading time<br>
+        Published {{dateFormat "Mon Jan 2 2006" .PublishDate}}</i><br>
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
-        <p class="author">
-            By Artur Roos, 
-            {{if .Params.Difficulty}}{{.Params.Difficulty}} Difficulty, {{end}}
-            {{.WordCount}} words,
-            ~{{.ReadingTime}}min reading time,
-            Published {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
+        </div>
+        <div style="text-align: right;">
+            {{if .Description}}{{.Description}}{{end}}
+        </div>
     </div>
     {{ .TableOfContents }}
-    <div style="height: 2rem;"></div>
     {{.Content}}
 {{end}}

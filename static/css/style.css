@@ -27,6 +27,7 @@ body {
 }
 
 #breadcrumbs {
+    font-size: 12pt;
     font-family: monospace;
     list-style: none;
     padding: 0px;
@@ -66,8 +67,8 @@ table tr th {
     white-space: nowrap;
 }
 
-.abstract {
-    margin: 12pt 24pt 12pt 24pt;
+.footnotes {
+    margin-top: 5%;
 }
 
 footer {
@@ -103,8 +104,10 @@ code > span::before {
     color: gray;
     counter-increment: loc;
     text-align: right;
-    display: block;
+    display: inline-block;
     width: 3rem;
+    min-width: 3rem;
+    max-width: 3rem;
     content: counter(loc) " ";
 }
 
