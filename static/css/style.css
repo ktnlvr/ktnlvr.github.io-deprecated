@@ -1,7 +1,7 @@
 body {
-    margin-right: 10%;
-    margin-left: 10%;
-    font-size: 24pt;
+    margin-right: 25%;
+    margin-left: 25%;
+    font-size: 12pt;
 }
 
 .list-of-posts {
@@ -27,7 +27,6 @@ body {
 }
 
 #breadcrumbs {
-    font-size: 16pt;
     font-family: monospace;
     list-style: none;
     padding: 0px;
