@@ -2,7 +2,6 @@ body {
     margin-right: 10%;
     margin-left: 10%;
     font-size: 24pt;
-    counter-reset: code-snippet;
 }
 
 .list-of-posts {
@@ -95,6 +94,10 @@ code {
 
 pre > code {
     white-space: inherit;
+}
+
+pre > code {
+    counter-reset: loc;
 }
 
 code > span::before {
