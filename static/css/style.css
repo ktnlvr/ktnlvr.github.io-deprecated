@@ -1,7 +1,8 @@
 body {
     margin-right: 10%;
     margin-left: 10%;
-    font-size: 2rem;
+    font-size: 24pt;
+    counter-reset: code-snippet;
 }
 
 .list-of-posts {
@@ -12,7 +13,7 @@ body {
     padding-left: 5%;
 }
 
-.list-of-posts>li:not(:last-child) {
+.list-of-posts > li:not(:last-child) {
     margin-bottom: 5%;
 }
 
@@ -27,17 +28,24 @@ body {
 }
 
 #breadcrumbs {
+    font-size: 16pt;
+    font-family: monospace;
     list-style: none;
     padding: 0px;
 }
 
-#breadcrumbs>li {
+#breadcrumbs > li {
     display: inline;
-    padding-left: 5px;
 }
 
-#breadcrumbs>li>a {
+#breadcrumbs > li > a {
     color: var(--body-color);
+    text-decoration: none;
+}
+
+#breadcrumbs > li > a:hover {
+    color: blue;
+    text-decoration: underline;
 }
 
 sup::before {
@@ -69,6 +77,10 @@ footer {
     opacity: 50%;
 }
 
+h1 h2 h3 h4 h5 h6 {
+    white-space: nowrap;
+}
+
 h1 {
     text-align: center;
 }
@@ -77,11 +89,36 @@ p {
     text-indent: 2rem;
 }
 
-#TableOfContents>ul::before {
+code {
+    white-space: nowrap;
+}
+
+pre > code {
+    white-space: inherit;
+}
+
+pre > code::before {
+    counter-reset: loc;
+    counter-increment: code-snippet;
+    content: "Listing " counter(code-snippet) ".";
+    font-family: regular;
+    font-style: italic;
+}
+
+code > span::before {
+    color: gray;
+    counter-increment: loc;
+    text-align: right;
+    display: block;
+    width: 3rem;
+    content: counter(loc) " ";
+}
+
+#TableOfContents > ul::before {
     content: 'Table Of Contents';
     font-weight: bold;
 }
 
-#TableOfContents>ul>li::before {
+#TableOfContents > ul > li::before {
     padding-left: 20px;
 }

@@ -1,5 +1,5 @@
 <footer>
-    Built with <a href="https://gohugo.io/">Hugo</a> & <a href="https://latex.vercel.app/">LaTeX.css</a>
+    Built with <a href="https://gohugo.io/">Hugo</a>
     by Artur Roos (c) 2023. {{if not .Draft}}<a href="{{.Permalink}}">Permalink</a>.{{end}} <a href="#top">Top</a>. 
     <br>All posts are licensed under
     {{block "license" .}}
@@ -9,6 +9,7 @@
     {{if not .Draft}}{{block "cite" .}}
     Cite this as <a href="{{.RelPermalink}}.bib">BibTex.</a>
     {{end}}{{end}}
-    This page was last modified {{.Lastmod | time.Format ":date_long"}}. Currently viewing commit <a href="https://github.com/Kittenlover229/rooftop/commit/{{.GitInfo.Hash}}">{{.GitInfo.AbbreviatedHash}}</a>.
+    This page was last modified {{.Lastmod | time.Format ":date_long"}}. 
+    Currently viewing {{if .GitInfo.AbbreviatedHash}}commit <a href="https://github.com/Kittenlover229/rooftop/commit/{{.GitInfo.Hash}}">{{.GitInfo.AbbreviatedHash}}{{else}}hanging changes{{end}}</a>.
     {{end}}
 </footer>

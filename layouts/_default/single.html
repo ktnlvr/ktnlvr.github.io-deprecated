@@ -3,8 +3,14 @@
     <div class="abstract">
         {{if .Description}}{{.Description}}{{end}}
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
-        <p class="author"><i>Artur Roos, {{dateFormat "Mon Jan 2 2006" .PublishDate}}</i></p>
+        <p class="author">
+            By Artur Roos, 
+            {{if .Params.Difficulty}}{{.Params.Difficulty}} Difficulty, {{end}}
+            {{.WordCount}} words,
+            ~{{.ReadingTime}}min reading time,
+            Published {{dateFormat "Mon Jan 2 2006" .PublishDate}}</p>
     </div>
     {{ .TableOfContents }}
+    <div style="height: 2rem;"></div>
     {{.Content}}
 {{end}}
