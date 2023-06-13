@@ -7,7 +7,7 @@
 
 <body style="padding-top: 5%; padding-bottom: 5%">
     <h1>Kittenlover's Rooftop</h1>
-    <p class="author">Artur Roos (aka. Kittenlover)</p>
+    <p class="author">Artur Roos (it's pronounced "ro:s")</p>
     This is my personal space and rather minimalistic online presence. This
     website includes a blog, a listing of my personal projects, my up-to-date CV
     and else. I do programming and contract work. Currently an active IB Student.
@@ -43,7 +43,7 @@
     stuff sometimes. Or check out my most recent posts:
     <ul>
         {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
-        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .PublishDate.Format "Monday, January 2, 2006" }})</a>.<br> {{.Description}}</li>
+        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}<i>{{ .Title }}</i> ({{ .PublishDate.Format "Monday, January 2, 2006" }})</a>.<br> {{.Description}}</li>
         {{end}}
     </ul>
 
