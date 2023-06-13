@@ -1,14 +1,18 @@
 ---
 title: "Sampling A Random List Is Harder Than You Think"
 date: 2023-06-13T13:36:20,513889181+03:00
-description: A small case study into biased list sampling based on my student's experience. 
+description: |
+    Generally all algorithms require some mathematical knowledge, sometimes in
+    obscure areas. However, rarely that area is probability theory. One of my 
+    students brought an interesting problem to my attention and I am willing to
+    share it with you.
 draft: false
 difficulty: Beginner
 ---
 
 Non-trivial probabilities aren't that difficult compared to other computer science concepts, especially if you are an experienced programmer and/or probabilist. However, that doesn't mean that rookie programmers fresh out of a bootcamp have same easy time as you, the nutella-coloured codeforces enjoyer. This is a case of one of my students who shall remain undisclosed. It happenned when as an exercise I suggested rewriting the Python's `random` builtin module entirely from scratch. Said student had to learn about pseudo-randomness in computers and I assumed they would have a great time with it.
 
-All was good and dandy until the deal came to implementing `random.choices`. The function signature is something like `choices(population: list, weights: list, k: int) -> list` (the original definition also includes optional `cumulative_weights`, but they can be derived from `weights` if necessary). The function itself samples the `population` list with replacement, such that likelyhood of each element being drawn is determined by it's respective weight. You can already rule out that drawing with replacement simplifies the task to repeating calls of the "weighted draw" function `k` times, so let's focus our attention on that. We will also assume that there exists a function `randint(a, b)` that returns a perfectly-uniform random number in range `[a; b)` or `[a; b[`, whichever notation you prefer, also assume no error handling and perfect inputs, since it will only clutter the code.
+All was good and dandy until the deal came to implementing `random.choices`[^python-std-choices]. The function signature is something like `choices(population: list, weights: list, k: int) -> list` (the original definition also includes optional `cumulative_weights`, but they can be derived from `weights` if/when necessary). The function itself samples the `population` list with replacement, such that likelyhood of each element being drawn is determined by it's respective weight. You can already rule out that drawing with replacement simplifies the task to repeating calls of the "weighted draw" function `k` times, so let's focus our attention on that. We will assume that there exists a function `randint(a, b)` that returns a perfectly-uniform random number in range `[a; b)` or `[a; b[`, whichever notation you prefer, also assume no error handling and perfect inputs, since it will only clutter the code.
 
 ```py
 def choices(population: list, weights: list, k: int) -> list:
@@ -64,8 +68,20 @@ Here we decide to divide `p` because even though it is the probability of drawin
 The following implementation employs cumulative weights and most certainly is the reason why this function in Python's standard library accepts them (cumulative weights) in the first place. For those unfamiliar with the concept, they are a prefix sum of the weights by definition, so some weight + all the weights preceding it. The cumulative weights are monotonously increasing which makes them a perfect subject for bisection (and binary search, respectively). Now we pick a random number from 0 to the maximum cumulative weight and search for its respective population element using the cumulative weights, bingo! It would look as follows in code:
 
 ```py
+from itertools import accumulate
+from bisect import bisect
+
+def choices(population: list, weights: list, k: int) -> list:
+    return [weighted_draw(population, weights) for _ in range(k)]
+
+def weighted_draw(population: list, weights: list):
+    cum_weights = accumulate(weights)
+    max_cum_weight = cum_weights[-1]
+    idx = bisect(cum_weights, random_01() * cum_weights[-1])
+    return population[idx]
 ```
 
-Funnily enough, the exact solution that CPython went with [^cpython-impl] for their standard library.
+Funnily enough, the exact solution that CPython went with [^cpython-impl] for their standard library, that makes me happy. Of course this implementation can be unfolded without using any of the standard functions. The overall runtime is *O(k logN)*, which is rather good: *k* for each choice and *logN* for bisecting a list of *N* elements.
 
+[^python-std-choices]: [`random.choices`](https://docs.python.org/3/library/random.html#random.choices) in Python's official documentation.
 [^cpython-impl]: [Link](https://github.com/python/cpython/blob/46957091433bfa097d7ea19b177bf42a52412f2d/Lib/random.py#L454-L489) to CPython's implementation of `random.choices` as of writing this post.
