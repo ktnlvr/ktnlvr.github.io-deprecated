@@ -1,6 +1,6 @@
 body {
-    margin-right: 25%;
-    margin-left: 25%;
+    margin-right: 20%;
+    margin-left: 20%;
     font-size: 16pt;
 }
 
@@ -121,4 +121,40 @@ code > span::before {
 
 #TableOfContents > ul > li::before {
     padding-left: 20px;
+}
+
+.footnotes p {
+    text-indent: 0;
+}
+
+.preface {
+    display: grid;
+    grid-template-columns: 33% 66%;
+    margin-bottom: 48pt;
+    grid-gap: .5rem;
+    grid-auto-columns: minmax(260px, 1fr);
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+
+    code {
+        font-size: 12pt;
+    }
+
+    code > span {
+        font-size: 10pt;
+        white-space: break-spaces;
+    }
+
+    #breadcrumbs {
+        display: none;
+    }
+
+    .preface {
+        display: none;
+    }
 }
