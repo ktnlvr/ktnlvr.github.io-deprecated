@@ -97,14 +97,6 @@ pre > code {
     white-space: inherit;
 }
 
-pre > code::before {
-    counter-reset: loc;
-    counter-increment: code-snippet;
-    content: "Listing " counter(code-snippet) ".";
-    font-family: regular;
-    font-style: italic;
-}
-
 code > span::before {
     color: gray;
     counter-increment: loc;
