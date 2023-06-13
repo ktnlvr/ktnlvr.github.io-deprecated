@@ -1,5 +1,9 @@
 <title>{{.Title}}</title>
-<link rel="stylesheet" href="{{.Site.BaseURL}}css/style.css"type="text/css">
+<style type="text/css">
+    @import url("{{.Site.BaseURL}}css/style.css");
+    @import url("{{.Site.BaseURL}}css/adaptive.css");
+</style> 
+<link rel="stylesheet" href=""type="text/css">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="{{if .Description}}{{.Description | truncate 60 }}{{else if .Summary}}{{.Summary | truncate 60 }}{{else}}{{.Content | truncate 60}}{{end}}" />

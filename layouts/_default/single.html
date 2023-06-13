@@ -1,12 +1,12 @@
 {{define "main"}}
     <h1>{{.Title}}</h1>
     <div class="preface">
-        <div style="white-space: nowrap;"><i>By Artur Roos<br>
+        <div class="overview">By Artur Roos<br>
         {{if .Params.Difficulty}}{{.Params.Difficulty}} Difficulty<br>
         {{end}}
         {{.WordCount}} words<br>
-        ~{{.ReadingTime}} minutes reading time<br>
-        Published {{dateFormat "Mon Jan 2 2006" .PublishDate}}</i><br>
+        Can be read in {{.ReadingTime}} minutes<br>
+        Published {{dateFormat "Mon Jan 2 2006" .PublishDate}}<br>
         {{if .Params.Github}}<a href="{{.Params.Github}}">[GitHub]</a>{{end}}
         </div>
         <div style="text-align: right;">

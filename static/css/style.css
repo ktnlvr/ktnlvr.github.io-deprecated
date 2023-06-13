@@ -2,6 +2,7 @@ body {
     margin-right: 20%;
     margin-left: 20%;
     font-size: 16pt;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .list-of-posts {
@@ -85,6 +86,7 @@ p {
 }
 
 code {
+    font-family: 'Courier New', Courier, monospace;
     white-space: nowrap;
 }
 
@@ -135,26 +137,7 @@ code > span::before {
     grid-auto-columns: minmax(260px, 1fr);
 }
 
-@media screen and (max-width: 1000px) {
-    body {
-        margin-right: 5%;
-        margin-left: 5%;
-    }
-
-    code {
-        font-size: 12pt;
-    }
-
-    code > span {
-        font-size: 10pt;
-        white-space: break-spaces;
-    }
-
-    #breadcrumbs {
-        display: none;
-    }
-
-    .preface {
-        display: none;
-    }
+.overview {
+    white-space: nowrap;
+    font-style: italic;
 }
