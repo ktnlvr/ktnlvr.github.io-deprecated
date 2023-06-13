@@ -1,7 +1,7 @@
 body {
     margin-right: 25%;
     margin-left: 25%;
-    font-size: 12pt;
+    font-size: 16pt;
 }
 
 .list-of-posts {
@@ -75,7 +75,7 @@ footer {
     opacity: 50%;
 }
 
-h1 h2 h3 h4 h5 h6 {
+h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
 }
 
