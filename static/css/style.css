@@ -89,8 +89,10 @@ code {
 }
 
 img {
-    width: 100%;
+    width: 80%;
     max-width: 1000px;
+    margin: auto;
+    display: block;
 }
 
 pre > code {
