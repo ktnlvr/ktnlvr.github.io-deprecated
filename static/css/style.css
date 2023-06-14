@@ -1,6 +1,6 @@
 body {
-    margin-right: 20%;
-    margin-left: 20%;
+    margin: 2.5% 20% 5% 20%;
+
     font-size: 16pt;
     font-family: 'Times New Roman', Times, serif;
 }
@@ -82,7 +82,7 @@ h1 {
 }
 
 p {
-    text-indent: 2rem;
+    text-indent: 1rem;
 }
 
 code {

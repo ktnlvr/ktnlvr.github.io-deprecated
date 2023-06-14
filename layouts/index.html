@@ -5,23 +5,28 @@
     {{- partial "head.html" . -}}
 </head>
 
-<body style="padding-top: 5%; padding-bottom: 5%">
+<body>
+    {{partial "breadcrumbs.html" .}}
     <h1>Kittenlover's Rooftop</h1>
-    My name is Artur Roos (pronounced "ro:s").
-    This is my personal space and rather minimalistic online presence. This
-    website includes a blog, a listing of my personal projects, my up-to-date CV
-    and else. I do programming and contract work. Currently an active IB Student.
-    Located in Joensuu, North Karelia, Finland. Fluent in English (IELTS C1).
-    My spare time is spent learning about programming
-    languages and linguistics in general, hacking away at my pet-projects, cooking,
-    gaming and sometimes reading. Experienced in C/C++ and Python3.X, interested in Rust.
-    I use arch btw.
+    <p>
+        My name is Artur Roos (pronounced "ro:s").
+        This is my personal space and rather minimalistic online presence. This
+        website includes a blog, a listing of my personal projects, my up-to-date CV
+        and else. I do programming and contract work. Currently an active IB Student.
+        Located in Joensuu, North Karelia, Finland. Fluent in English (IELTS C1).
+        My spare time is spent learning about programming
+        languages and linguistics in general, hacking away at my pet-projects, cooking,
+        gaming and sometimes reading. Experienced in C/C++ and Python3.X, interested in Rust.
+        I use arch btw.
+    </p>
 
     <h2>Technologies</h2>
-    I don't really specialize, during my time I've tried many different paradigms
-    and fields, the most fun I had while doing Language Design & Graphics
-    Programming related work. These are the technologies I would call myself confident
-    with in no particular order:
+    <p>
+        I don't really specialize, during my time I've tried many different paradigms
+        and fields, the most fun I had while doing Language Design & Graphics
+        Programming related work. These are the technologies I would call myself confident
+        with in no particular order:
+    </p>
 
     <ul>
         <li><b>C/C++:</b> C89/99/11, Cpp11/14/17/20/23, STL, entt, Dear ImGUI, glfw, glm, gtest, benchmark, boost.asio</li>
@@ -31,17 +36,22 @@
         <li><b>Misc:</b> GNU/Linux, git, Hugo, OpenGL, Vulkan, LaTeX</li>
     </ul>
 
-    I am also capable of writing Java, JavaScript and C#, but I don't work with them as often. 
+    <p>
+        I am also capable of writing Java, JavaScript and C#, but I don't work
+        with them as often. 
+    </p>
 
     <h2>Projects</h2>
-    Look at the projects I am proud to show off here <a href="/projects">here</a>. 
-    I started programming as a side thing in 2017 in 5th grade as a hobby, but 
-    refused to attend any programming groups in my hometown. Around 2019
-    programming took on a more important role in my life due to my increasing
-    interest in mathematics. Most of the project I've done over the years
-    will be never see the light of day, since I did not bother myself with
-    keeping a comprehensive log of what I have and have not done.
-    <ul class="post-list">
+    <p>
+        Look at the projects I am proud to show off here <a href="/projects">here</a>. 
+        I started programming as a side thing in 2017 in 5th grade as a hobby, but 
+        refused to attend any programming groups in my hometown. Around 2019
+        programming took on a more important role in my life due to my increasing
+        interest in mathematics. Most of the project I've done over the years
+        will be never see the light of day, since I did not bother myself with
+        keeping a comprehensive log of what I have and have not done.
+    </p>
+        <ul class="post-list">
         {{ range ( where .Site.RegularPages "Type" "projects" | first 3 ) }}
         <li>
             <a href="{{ .RelPermalink }}">
@@ -52,8 +62,8 @@
     </ul>
 
     <h2>Posts</h2>
-    Check out all of my posts <a href="/posts">here</a>. I write about technical
-    stuff sometimes. Or check out my most recent posts:
+    <p>Check out all of my posts <a href="/posts">here</a>. I write about technical
+    stuff sometimes. Or check out my most recent posts:</p>
     <ul class="post-list">
         {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
         <li>
