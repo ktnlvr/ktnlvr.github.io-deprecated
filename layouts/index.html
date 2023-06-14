@@ -16,14 +16,22 @@
     languages and linguistics in general, hacking away at my pet-projects, cooking,
     gaming and sometimes reading. Experienced in C/C++ and Python3.X, interested in Rust.
     I use arch btw.
+
     <h2>Technologies</h2>
+    I don't really specialize, during my time I've tried many different paradigms
+    and fields, the most fun I had while doing Language Design & Graphics
+    Programming related work. These are the technologies I would call myself confident
+    with in no particular order:
+
     <ul>
         <li><b>C/C++:</b> C89/99/11, Cpp11/14/17/20/23, STL, entt, Dear ImGUI, glfw, glm, gtest, benchmark, boost.asio</li>
-        <li><b>Python3.X:</b> sqlalchemy, FastAPI, Flask</li>
+        <li><b>Python3.X:</b> sqlalchemy, FastAPI, Flask, requests, bs4</li>
         <li><b>Rust:</b> serde, sqlx, actix-web, tokio, russh</li>
         <li><b>Databases:</b> SQLite3, MongoDB</li>
-        <li><b>Misc:</b> GNU/Linux, git, Hugo, OpenGL, Vulkan</li>
+        <li><b>Misc:</b> GNU/Linux, git, Hugo, OpenGL, Vulkan, LaTeX</li>
     </ul>
+
+    I am also capable of writing Java, JavaScript and C#, but I don't work with them as often. 
 
     <h2>Projects</h2>
     Look at the projects I am proud to show off here <a href="/projects">here</a>. 
@@ -33,18 +41,27 @@
     interest in mathematics. Most of the project I've done over the years
     will be never see the light of day, since I did not bother myself with
     keeping a comprehensive log of what I have and have not done.
-    <ul>
+    <ul class="post-list">
         {{ range ( where .Site.RegularPages "Type" "projects" | first 3 ) }}
-        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}{{ .Title }} ({{ .PublishDate.Format "Monday, January 2, 2006" }})</a>.<br> {{.Description}}</li>
+        <li>
+            <a href="{{ .RelPermalink }}">
+                {{if .Draft}}Draft: {{end}}<i>{{ .Title }}</i>
+                ({{ .PublishDate.Format "Monday, January 2, 2006" }})</a>.
+            <div>{{.Description}}</div>
         {{end}}
     </ul>
 
     <h2>Posts</h2>
     Check out all of my posts <a href="/posts">here</a>. I write about technical
     stuff sometimes. Or check out my most recent posts:
-    <ul>
+    <ul class="post-list">
         {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
-        <li><a href="{{ .RelPermalink }}">{{if .Draft}}Draft: {{end}}<i>{{ .Title }}</i> ({{ .PublishDate.Format "Monday, January 2, 2006" }})</a>.<br> {{.Description}}</li>
+        <li>
+            <a href="{{ .RelPermalink }}">
+                {{if .Draft}}Draft: {{end}}<i>{{.Title}}</i> 
+                ({{.PublishDate.Format "Monday, January 2, 2006"}})</a>.
+            <div>{{.Description}}</div>
+        </li>
         {{end}}
     </ul>
 

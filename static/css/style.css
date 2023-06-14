@@ -13,7 +13,7 @@ body {
     padding-left: 5%;
 }
 
-.list-of-posts > li:not(:last-child) {
+.list-of-posts>li:not(:last-child) {
     margin-bottom: 5%;
 }
 
@@ -34,16 +34,16 @@ body {
     padding: 0px;
 }
 
-#breadcrumbs > li {
+#breadcrumbs>li {
     display: inline;
 }
 
-#breadcrumbs > li > a {
+#breadcrumbs>li>a {
     color: var(--body-color);
     text-decoration: none;
 }
 
-#breadcrumbs > li > a:hover {
+#breadcrumbs>li>a:hover {
     color: blue;
     text-decoration: underline;
 }
@@ -97,15 +97,15 @@ img {
     display: block;
 }
 
-pre > code {
+pre>code {
     white-space: inherit;
 }
 
-pre > code {
+pre>code {
     counter-reset: loc;
 }
 
-code > span::before {
+code>span::before {
     color: gray;
     counter-increment: loc;
     text-align: right;
@@ -116,12 +116,12 @@ code > span::before {
     content: counter(loc) " ";
 }
 
-#TableOfContents > ul::before {
+#TableOfContents>ul::before {
     content: 'Table Of Contents';
     font-weight: bold;
 }
 
-#TableOfContents > ul > li::before {
+#TableOfContents>ul>li::before {
     padding-left: 20px;
 }
 
@@ -140,4 +140,9 @@ code > span::before {
 .overview {
     white-space: nowrap;
     font-style: italic;
+}
+
+
+.post-list>li:not(:last-child) {
+    margin-bottom: 10pt;
 }

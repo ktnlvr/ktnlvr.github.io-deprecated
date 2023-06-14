@@ -9,7 +9,7 @@
         font-size: 24pt;
     }
 
-    .preface > .overview {
+    .preface>.overview {
         margin-bottom: 24pt;
     }
 
@@ -17,7 +17,7 @@
         font-size: 12pt;
     }
 
-    code > span {
+    code>span {
         font-size: 10pt;
         white-space: break-spaces;
     }
