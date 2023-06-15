@@ -3,6 +3,7 @@ body {
 
     font-size: 16pt;
     font-family: 'Times New Roman', Times, serif;
+    counter-reset: sidenote-counter;
 }
 
 .list-of-posts {
@@ -145,4 +146,30 @@ code>span::before {
 
 .post-list>li:not(:last-child) {
     margin-bottom: 10pt;
+}
+
+blockquote > p::before {
+    counter-increment: sidenote-counter;
+    content: counter(sidenote-counter) ". ";
+    font-weight: bold;
+    position: relative;
+    font-size: 0.9em;
+}
+
+@media screen and (min-width: 1000px) {
+    blockquote {
+        top: -3rem;
+        font-size: 12pt;
+        margin-top: 1rem;
+        margin-right: -25%;
+    
+        text-align: right;
+        width: 20%;
+        float: right;
+        position: relative;
+    }
+    
+    blockquote {
+        margin-top: 0;
+    }
 }

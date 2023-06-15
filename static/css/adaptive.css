@@ -45,4 +45,8 @@
     footer {
         margin-top: 4rem;
     }
+
+    blockquote {
+        opacity: 66%;
+    }
 }
