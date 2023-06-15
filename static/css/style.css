@@ -1,7 +1,20 @@
-body {
-    margin: 2.5% 15% 5% 15%;
+:root {
+    --side-space: 20%;
+    --vertical-space: 2.5%;
+    --paragraph-spacing: 4%;
+    --h1-horizontal-squeeze: 15%;
+    --font-size: 16pt;
+    --sidenote-offset: 8rem;
+}
 
-    font-size: 16pt;
+body {
+    margin: 
+        var(--vertical-space)
+        var(--side-space)
+        calc(2 * var(--vertical-space))
+        var(--side-space);
+
+    font-size: var(--font-size);
     font-family: 'Times New Roman', Times, serif;
     counter-reset: sidenote-counter;
 }
@@ -29,7 +42,7 @@ body {
 }
 
 #breadcrumbs {
-    font-size: 12pt;
+    font-size: smaller;
     font-family: monospace;
     list-style: none;
     padding: 0px;
@@ -41,7 +54,7 @@ body {
 }
 
 #breadcrumbs>li>a {
-    color: var(--body-color);
+    color: black;
     text-decoration: none;
 }
 
@@ -59,7 +72,11 @@ sup::after {
 }
 
 table {
-    margin: 4% 0 4% 0;
+    margin: var(--paragraph-spacing) 0 var(--paragraph-spacing) 0;
+}
+
+table thead {
+    font-size: larger;
 }
 
 table tr td:last-child {
@@ -71,17 +88,18 @@ table tr th {
 }
 
 .footnotes {
-    margin-top: 10%;
+    margin-top: calc(2 * var(--paragraph-spacing))
 }
 
 footer {
-    margin-top: 5%;
+    margin-top: calc(2 * var(--paragraph-spacing));
     opacity: 50%;
 }
 
 h1 {
     text-align: center;
-    padding: 0 15% 0 15%;
+    padding:    0 var(--h1-horizontal-squeeze) 
+                0 var(--h1-horizontal-squeeze);
 }
 
 p {
@@ -163,24 +181,18 @@ blockquote>p::before {
     content: counter(sidenote-counter) ". ";
     font-weight: bold;
     position: relative;
-    font-size: 0.9em;
+    font-size: smaller;
 }
 
 @media screen and (min-width: 1000px) {
     blockquote {
-        top: -8rem;
-        font-size: 12pt;
-        margin-top: 1rem;
-        margin-right: -15%;
-        border-right: 2px solid black;
+        top: calc(-1 * var(--sidenote-offset));
+        font-size: smaller;
+        margin-right: calc(-1 * var(--side-space));
 
         text-align: right;
-        width: 15%;
+        width: var(--side-space);
         float: right;
         position: relative;
-    }
-
-    blockquote {
-        margin-top: 0;
     }
 }
