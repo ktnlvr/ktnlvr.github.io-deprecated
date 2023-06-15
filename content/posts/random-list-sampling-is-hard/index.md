@@ -12,20 +12,25 @@ difficulty: Beginner
 
 Non-trivial probabilities aren't that difficult compared to other computer science concepts, especially if you are an experienced programmer and/or probabilist. However, that doesn't mean that rookie programmers fresh out of a bootcamp have same easy time as you, the Nutella-titled codeforces enjoyer. This is a case of one of my students who shall remain undisclosed. It happened when as an exercise I suggested rewriting Python's `random` builtin module entirely from scratch. Said student had to learn about pseudo-randomness in computers and I assumed they would have a great time with it.
 
-All was good and dandy until the deal came to implementing `random.choices`[^python-std-choices]. The function takes in a list of items, a list of weights and some integer `k` (the original definition also includes optional cumulative weights, but they can be derived from weights if/when necessary). The function itself samples (draws a random element from) the item list with replacement `k` times, such that likelyhood of each element being drawn is determined by its respective weight (the higher the weight, the higher the probability). In the end you get a list of length `k` with elements randomly chosen from the supplied list, where elements with higher weights were more likely to get picked. For clarity explore the example below.
+All was good and dandy until the deal came to implementing `random.choices`[^python-std-choices]. The function takes in a list of items, a list of weights and some integer `k` (the original definition also includes optional cumulative weights, but they can be derived from weights if/when necessary). The function itself samples (draws a random element from) the item list with replacement `k` times, such that likelyhood of each element being drawn is determined by its respective weight (the higher the weight, the higher the probability). In the end you get a list of length `k` with elements randomly chosen from the supplied list, where elements with higher weights were more likely to get picked.
+
+
+Imagine a familiar situation from your probabilities class: you are given a magical bag, such that it contains balls: 3 blue, 1 brown and none of other colour. In this case, the amount of balls in the bag is their weights. The magical property of said bag is that it manifests a same-coloured ball when one is taken out, so were you to pull out a blue one, another blue one would appear. Notice how this property of the bag maintains the probabilities of each type of ball to get pulled out *no matter how many times we pull* (sample the bag). We can imagine pulling 4 balls out of the bag in code:
+
+> We use weights instead of probabilities because they are more universal. Besides, probabilities can be derived from weights: if we sum up all the weights and divide each individual weight by the total, we get a probability out! Beyond, probabilities are weights themselves, with an imposed requirement of summing up to 1. Why use something more restrictive if maths works just fine in the general case?
 
 ```py
 from random import choices
 
-k = 1
-chosen: list[str] = choices(['a', 'b', 'c'], [4, 8, 0], k=k)
+k = 4
+chosen: list[str] = choices(['blue', 'brown', 'other'], [3, 1, 0], k=k)
 assert len(chosen) == k
 
-x: str = ls[0]
+(first, *_) = ls
 
-print(x) # P(x='a') = 4 / (4 + 8 + 0) = 1/3
-         # P(x='b') = 8 / (4 + 8 + 0) = 2/3
-         # P(x='c') = 0 / (4 + 8 + 0) = 0
+print(first) # P(first='blue') = 3 / (3 + 1 + 0) = 3/4
+             # P(first='brown') = 1 / (3 + 1 + 0) = 1/4
+             # P(first='other') = 0 / (3 + 1 + 0) = 0
 ```
 
 
