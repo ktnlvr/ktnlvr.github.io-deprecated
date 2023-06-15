@@ -12,7 +12,24 @@ difficulty: Beginner
 
 Non-trivial probabilities aren't that difficult compared to other computer science concepts, especially if you are an experienced programmer and/or probabilist. However, that doesn't mean that rookie programmers fresh out of a bootcamp have same easy time as you, the nutella-coloured codeforces enjoyer. This is a case of one of my students who shall remain undisclosed. It happened when as an exercise I suggested rewriting Python's `random` builtin module entirely from scratch. Said student had to learn about pseudo-randomness in computers and I assumed they would have a great time with it.
 
-All was good and dandy until the deal came to implementing `random.choices`[^python-std-choices]. The function takes in a list of items, a list of weights and some integer `k` (the original definition also includes optional cumulative weights, but they can be derived from weights if/when necessary). The function itself samples (draws a random element from) the item list with replacement, such that likelyhood of each element being drawn is determined by its respective weight (the higher the weight, the higher the probability). You can already figure out that drawing with replacement simplifies the task to repeating calls of the "weighted draw" function `k` times, so let us focus our attention on that. We will take for granted a function `randint(a, b)` that returns a perfect uniformly distributed random number in range `[a; b)` or `[a; b[`. Also drop all error handling, since it will only clutter the code and it doesn't change the algorithm much. Based on what was said before, the `choices` function may look like this:
+All was good and dandy until the deal came to implementing `random.choices`[^python-std-choices]. The function takes in a list of items, a list of weights and some integer `k` (the original definition also includes optional cumulative weights, but they can be derived from weights if/when necessary). The function itself samples (draws a random element from) the item list with replacement `k` times, such that likelyhood of each element being drawn is determined by its respective weight (the higher the weight, the higher the probability). In the end you get a list of length `k` with elements randomly chosen from the supplied lists, where elements with higher weights were more likely to be picked. For clarity explore the example below.
+
+```py
+from random import choices
+
+k = 1
+chosen: list[str] = choices(['a', 'b', 'c'], [4, 8, 0], k=k)
+assert len(chosen) == k
+
+x: str = ls[0]
+
+print(x) # P(x='a') = 4 / (4 + 8 + 0) = 1/3
+         # P(x='b') = 8 / (4 + 8 + 0) = 2/3
+         # P(x='c') = 0 / (4 + 8 + 0) = 0
+```
+
+
+You can already figure out that drawing with replacement simplifies the task to repeating calls of the "weighted draw" function `k` times, so let us focus our attention on that. We will take for granted a function `randint(a, b)` that returns a perfect uniformly distributed random number in range `[a; b)` or `[a; b[`. Also drop all error handling, since it will only clutter the code and it doesn't change the algorithm much. Based on what was said before, the `choices` function may look like this:
 
 ```py
 def choices(population: list, weights: list, k: int) -> list:
@@ -32,20 +49,16 @@ def naive_weighted_draw(population: list, weights: list):
 This approach is very direct and clearly didn't take much effort. We can assume that the implementation is drawn from the previous experience of implementing a function that samples a random element uniformly. It... works. Not in the nearly best way, not in all cases (e.g. fractional weights), the memory usage can be through the roof in some edgecases, but it limps. Not remotely good enough for production. There is a better candidate.
 
 ```py
-from itertools import cycle
-
 def random_01():
     return randint(0, 2**32) / 2**32
 
-def cyclic_weighted_draw(population: list, weights: list):
+def repeated_sampling_weighted_draw(population: list, weights: list):
     total_w = sum(weights)
-    probabilities = map(lambda w: w / total_w, weights)
-    # cycle just repeats the iterator forever
-    # making this is an infinite loop
-    for e, p in cycle(zip(population, probabilities)):
-        if random_01() <= p:
-            return e
-    raise 
+    probabilities = list(map(lambda w: w / total_w, weights))
+    while True:
+        for e, p in zip(population, probabilities):
+            if random_01() <= p:
+                return e
 ```
 
 In this case we keep sampling the population elements one by one with their respective probabilities. If none of the elements matched first time we just keep sampling using the `cycle` iterator tool Despite the *exceptionally poor* theoretical runtime of *O(∞)* this implementation might seem more sensible, though it raises an interesting question: are the earlier elements in the list more likely to occur when sampling? An answer might be intuitively apparent, yet it's not the same to everyone. Spoiler: the probability doesn't gets skewed, shame. The probability for any noninitial element to occur is exactly the probability of it to occur on its own **given** that none of the previous elements were chosen. If you expand it according to Bayes' Theorem[^3b1b-bayes] we get that the probability is in fact independent, so this algorithm is nontheless sound. Anyhow, what gives? This didn't save us from *O(∞)*, so we are safe to forget this solution.
