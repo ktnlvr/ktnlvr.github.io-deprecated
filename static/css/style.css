@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
 :root {
     --side-space: 20%;
     --vertical-space: 2.5%;
@@ -107,7 +109,7 @@ p {
 }
 
 code {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
     white-space: nowrap;
 }
 
@@ -170,7 +172,6 @@ code>span::before {
     white-space: nowrap;
     font-style: italic;
 }
-
 
 .post-list>li:not(:last-child) {
     margin-bottom: 10pt;

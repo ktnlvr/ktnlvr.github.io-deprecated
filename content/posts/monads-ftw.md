@@ -13,7 +13,8 @@ When thinking about monads it's important to differentiate their meaning in the 
 
 Imagine the following: you are writing a matchmaking system and you want your players to hang out together. For that purpose you designed a system of rooms.
 
-{{< sidenote text="`@struct` serves the same function as `@dataclass` in classical Python. Assume all the fields of the class are actually fields of an instance and the constructor has all said fields as it's named arguments." >}}
+> `@struct` serves the same function as `@dataclass` in classical Python. Assume all the fields of the class are actually fields of an instance and the constructor has all said fields as it's named arguments.
+
 ```py
 @struct
 class Room:
@@ -39,7 +40,7 @@ This is a standard way of handling a nullable value. We can probably see ourselv
 An experienced programer might guess that `max_players` can very well be `None`, but the language itself doesn't tell you that.
 Let's try and fix that possible problem with the following structure.
 
-{{< sidenote text="The operation of transforming a value of type `T` into `Functor[T]` is commonly called \"lifting\" or less commonly \"wrapping\". In this case the lift is `Something[T]`. When instantiating a room its field `.max_players` had to have been initialized with either `Nothing()` or `Something(max_players_value)`" >}}
+> The operation of transforming a value of type `T` into `Functor[T]` is commonly called \"lifting\" or less commonly \"wrapping\". In this case the lift is `Something[T]`. When instantiating a room its field `.max_players` had to have been initialized with either `Nothing()` or `Something(max_players_value)`
 ```py
 @struct 
 class Maybe[T]:
