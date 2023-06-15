@@ -1,6 +1,6 @@
 {{define "main"}}
 {{.Content}}
-<ul class="list-of-posts">
+<ul class="content-list">
 {{range .Pages}}
 <li class="{{if .Draft}}unlisted{{end}}">
     <a href="{{.RelPermalink}}" class="article-title">{{.Title}}</a>{{if .Draft}} (Unlisted){{end}}<br>

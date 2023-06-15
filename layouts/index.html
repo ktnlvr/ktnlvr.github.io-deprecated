@@ -51,7 +51,7 @@
         will be never see the light of day, since I did not bother myself with
         keeping a comprehensive log of what I have and have not done.
     </p>
-        <ul class="post-list">
+        <ul class="recent-content-list">
         {{ range ( where .Site.RegularPages "Type" "projects" | first 3 ) }}
         <li>
             <a href="{{ .RelPermalink }}">
@@ -64,7 +64,7 @@
     <h2>Posts</h2>
     <p>Check out all of my posts <a href="/posts">here</a>. I write about technical
     stuff sometimes. Or check out my most recent posts:</p>
-    <ul class="post-list">
+    <ul class="recent-content-list">
         {{ range ( where .Site.RegularPages "Type" "posts" | first 3 ) }}
         <li>
             <a href="{{ .RelPermalink }}">

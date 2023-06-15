@@ -7,6 +7,10 @@
     --h1-horizontal-squeeze: 15%;
     --font-size: 16pt;
     --sidenote-offset: 8rem;
+    --article-list-spacing: 5%;
+    --image-width: 80%;
+    --max-image-width: 800px;
+    --recent-content-spacing: 8px;
 }
 
 * {
@@ -14,29 +18,28 @@
 }
 
 body {
-    margin:
-        var(--vertical-space) var(--side-space) calc(2 * var(--vertical-space)) var(--side-space);
+    margin-top: var(--vertical-space);
+    margin-bottom: var(--vertical-space);
+    margin-right: var(--side-space);
+    margin-left: var(--side-space);
 
     font-size: var(--font-size);
     font-family: 'Times New Roman', Times, serif;
+
     counter-reset: sidenote-counter;
 }
 
-.list-of-posts {
+.content-list {
     list-style: none;
-    padding: 0px;
-    padding-top: 5%;
-    padding-right: 5%;
-    padding-left: 5%;
+}
+
+.content-list>li:not(:last-child) {
+    margin-bottom: var(--article-list-spacing);
 }
 
 html {
     width: 100%;
     overflow-x: hidden;
-}
-
-.list-of-posts>li:not(:last-child) {
-    margin-bottom: 5%;
 }
 
 .unlisted {
@@ -54,7 +57,7 @@ html {
     font-family: monospace;
     list-style: none;
     padding: 0px;
-    margin-bottom: 5%;
+    margin-bottom: var(--article-list-spacing);
 }
 
 #breadcrumbs>li {
@@ -80,7 +83,8 @@ sup::after {
 }
 
 table {
-    margin: var(--paragraph-spacing) 0 var(--paragraph-spacing) 0;
+    margin-top: var(--paragraph-spacing);
+    margin-bottom: var(--paragraph-spacing);
 }
 
 table thead {
@@ -119,8 +123,8 @@ code {
 }
 
 img {
-    width: 80%;
-    max-width: 1000px;
+    width: var(--image-width);
+    max-width: var(--max-image-width);
     margin: auto;
     display: block;
 }
@@ -164,9 +168,9 @@ code>span::before {
 .preface {
     display: grid;
     grid-template-columns: 33% 66%;
-    margin-bottom: 48pt;
+    margin-top: calc(var(--vertical-space));
+    margin-bottom: calc(2 * var(--vertical-space));
     grid-gap: .5rem;
-    grid-auto-columns: minmax(260px, 1fr);
 }
 
 .footnotes>hr {
@@ -177,8 +181,8 @@ code>span::before {
     font-style: italic;
 }
 
-.post-list>li:not(:last-child) {
-    margin-bottom: 10pt;
+.recent-content-list>li:not(:last-child) {
+    margin-bottom: var(--recent-content-spacing)
 }
 
 blockquote>p::before {
