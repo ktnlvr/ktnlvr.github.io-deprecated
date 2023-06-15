@@ -117,9 +117,9 @@ code>span::before {
     counter-increment: loc;
     text-align: right;
     display: inline-block;
-    width: 3rem;
-    min-width: 3rem;
-    max-width: 3rem;
+    width: 2rem;
+    min-width: 2rem;
+    max-width: 2rem;
     content: counter(loc) " ";
 }
 
@@ -172,6 +172,7 @@ blockquote>p::before {
         font-size: 12pt;
         margin-top: 1rem;
         margin-right: -15%;
+        border-right: 2px solid black;
 
         text-align: right;
         width: 15%;
