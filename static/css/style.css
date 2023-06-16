@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 :root {
     --side-space: 20%;
     --vertical-space: 2.5%;
@@ -109,6 +109,7 @@ footer {
 }
 
 h1 {
+    font-family: 'Playfair Display', 'Times New Roman', Times, serif;
     text-align: center;
     padding: 0 var(--h1-horizontal-squeeze) 0 var(--h1-horizontal-squeeze);
 }
