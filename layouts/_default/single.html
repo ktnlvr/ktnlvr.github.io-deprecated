@@ -15,4 +15,10 @@
     </div>
     {{ .TableOfContents }}
     {{.Content}}
+    <div class="social">
+        {{if .Params.Social}}
+        Found this post interesting? Discuss on 
+            <a href="{{.Params.Social.Hackernews}}">HackerNews</a>.
+        {{end}}
+    </div>
 {{end}}

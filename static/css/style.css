@@ -186,6 +186,10 @@ code>span::before {
     margin-bottom: var(--recent-content-spacing)
 }
 
+.social {
+    margin-top: var(--vertical-space);
+}
+
 blockquote>p::before {
     counter-increment: sidenote-counter;
     content: counter(sidenote-counter) ". ";
